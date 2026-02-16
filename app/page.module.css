@@ -1,0 +1,211 @@
+.page {
+  --stroke: rgba(255, 255, 255, 0.12);
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.7);
+
+  min-height: 100vh;
+  padding: 28px 16px 52px;
+  background:
+    radial-gradient(1000px 600px at 10% -8%, rgba(124, 92, 255, 0.2), transparent 54%),
+    radial-gradient(900px 580px at 100% 2%, rgba(35, 194, 255, 0.14), transparent 54%),
+    radial-gradient(700px 520px at 50% 100%, rgba(16, 185, 129, 0.12), transparent 54%),
+    #0b0f17;
+}
+
+.hero {
+  width: min(1080px, 100%);
+  margin: 0 auto;
+  border-radius: 18px;
+  border: 1px solid var(--stroke);
+  background: linear-gradient(180deg, rgba(15, 22, 35, 0.92), rgba(12, 18, 32, 0.92));
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.3);
+  padding: 22px;
+}
+
+.heroContent {
+  display: grid;
+  grid-template-columns: 1.4fr 0.9fr;
+  gap: 14px;
+  align-items: start;
+}
+
+.kicker {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(35, 194, 255, 0.86);
+}
+
+.hero h1 {
+  margin: 10px 0 8px;
+  color: var(--text);
+  font-size: clamp(28px, 4.6vw, 44px);
+  line-height: 1.1;
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.tags {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tags span {
+  border: 1px solid var(--stroke);
+  border-radius: 999px;
+  padding: 4px 9px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.actions {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.button,
+.buttonPrimary {
+  text-decoration: none;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 620;
+}
+
+.button {
+  border: 1px solid var(--stroke);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+}
+
+.buttonPrimary {
+  border: 1px solid rgba(124, 92, 255, 0.68);
+  background: linear-gradient(180deg, rgba(124, 92, 255, 0.34), rgba(124, 92, 255, 0.2));
+  color: #f8fcff;
+}
+
+.heroPreview {
+  border: 1px solid var(--stroke);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 12px;
+}
+
+.previewLabel {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.imagePlaceholder {
+  margin-top: 9px;
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  border-radius: 12px;
+  min-height: 210px;
+  background:
+    radial-gradient(320px 180px at 15% 20%, rgba(124, 92, 255, 0.18), transparent 58%),
+    radial-gradient(260px 170px at 90% 80%, rgba(35, 194, 255, 0.16), transparent 58%),
+    rgba(255, 255, 255, 0.02);
+  display: grid;
+  place-content: center;
+  text-align: center;
+  gap: 6px;
+}
+
+.imagePlaceholder span {
+  font-size: 17px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.imagePlaceholder small {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.previewHint {
+  margin: 8px 0 0;
+  color: rgba(255, 255, 255, 0.66);
+  font-size: 12px;
+}
+
+.dailySection {
+  width: min(1080px, 100%);
+  margin: 14px auto 0;
+  border-radius: 18px;
+  border: 1px solid var(--stroke);
+  background: linear-gradient(180deg, rgba(15, 22, 35, 0.92), rgba(12, 18, 32, 0.92));
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.3);
+  padding: 18px;
+}
+
+.dailyHeader h2 {
+  margin: 0;
+  color: var(--text);
+  font-size: 24px;
+}
+
+.dailyHeader p {
+  margin: 8px 0 0;
+  color: var(--muted);
+}
+
+.dailyGrid {
+  margin-top: 12px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.lessonCard {
+  text-decoration: none;
+  border-radius: 14px;
+  border: 1px solid var(--stroke);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.day {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(35, 194, 255, 0.82);
+}
+
+.lessonCard h3 {
+  margin: 0;
+  color: var(--text);
+  font-size: 18px;
+}
+
+.status {
+  width: fit-content;
+  border: 1px solid var(--stroke);
+  border-radius: 999px;
+  padding: 3px 8px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.76);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+@media (max-width: 900px) {
+  .heroContent {
+    grid-template-columns: 1fr;
+  }
+
+  .dailyGrid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,335 @@
+.page {
+  min-height: 100vh;
+  background:
+    radial-gradient(850px 520px at 0% -10%, rgba(0, 120, 212, 0.12), transparent 52%),
+    radial-gradient(700px 420px at 100% 0%, rgba(16, 185, 129, 0.1), transparent 55%),
+    linear-gradient(180deg, #f7f8fb 0%, #eef2f8 100%);
+  color: #102236;
+}
+
+.container {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+  padding: 28px 16px 54px;
+  display: grid;
+  gap: 14px;
+}
+
+.hero {
+  border: 1px solid rgba(16, 34, 54, 0.11);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 14px 32px rgba(13, 32, 59, 0.1);
+  padding: 22px;
+}
+
+.kicker {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #375579;
+}
+
+.hero h1 {
+  margin: 10px 0 8px;
+  font-size: clamp(28px, 4.8vw, 44px);
+  line-height: 1.08;
+}
+
+.lead {
+  margin: 0;
+  color: #3f5a7a;
+  line-height: 1.5;
+}
+
+.actions {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.button,
+.buttonPrimary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  border: 1px solid rgba(14, 43, 75, 0.16);
+  text-decoration: none;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 620;
+}
+
+.button {
+  background: rgba(255, 255, 255, 0.7);
+  color: #15375c;
+}
+
+.buttonPrimary {
+  background: linear-gradient(180deg, rgba(0, 120, 212, 0.95), rgba(0, 99, 176, 0.95));
+  border-color: rgba(0, 120, 212, 0.7);
+  color: #f7fbff;
+}
+
+.quickNav {
+  position: sticky;
+  top: 14px;
+  z-index: 10;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 10px;
+  border: 1px solid rgba(16, 34, 54, 0.1);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(7px);
+}
+
+.quickNav a {
+  border: 1px solid rgba(15, 44, 74, 0.12);
+  border-radius: 999px;
+  text-decoration: none;
+  padding: 6px 10px;
+  color: #2e4f74;
+  font-size: 12px;
+  background: rgba(255, 255, 255, 0.56);
+}
+
+.section {
+  border: 1px solid rgba(16, 34, 54, 0.1);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 10px 26px rgba(14, 37, 63, 0.07);
+  padding: 16px;
+}
+
+.section h2 {
+  margin: 0;
+  font-size: clamp(20px, 2.4vw, 27px);
+}
+
+.section h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+
+.section p {
+  margin: 8px 0 0;
+  color: #3f5a7a;
+  line-height: 1.5;
+}
+
+.section ul {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  color: #2f4f74;
+  line-height: 1.55;
+}
+
+.note {
+  margin-top: 12px;
+  border: 1px solid rgba(13, 43, 78, 0.15);
+  border-radius: 12px;
+  background: rgba(240, 248, 255, 0.84);
+  padding: 12px;
+}
+
+.highlight {
+  margin-top: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 120, 212, 0.32);
+  background: rgba(0, 120, 212, 0.08);
+  padding: 12px;
+  color: #114679;
+  font-weight: 550;
+}
+
+.twoCol {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.badCard,
+.goodCard {
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.badCard {
+  border: 1px solid rgba(220, 38, 38, 0.24);
+  background: rgba(220, 38, 38, 0.06);
+}
+
+.goodCard {
+  border: 1px solid rgba(5, 150, 105, 0.24);
+  background: rgba(5, 150, 105, 0.06);
+}
+
+.methodGrid {
+  margin-top: 12px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.methodCard {
+  border-radius: 12px;
+  border: 1px solid rgba(16, 34, 54, 0.12);
+  background: rgba(255, 255, 255, 0.7);
+  padding: 12px;
+}
+
+.methodCard p {
+  margin-top: 6px;
+}
+
+.methodCard span {
+  display: inline-block;
+  margin-top: 8px;
+  color: #3f5a7a;
+  font-size: 12px;
+}
+
+.tableWrap {
+  margin-top: 10px;
+  overflow-x: auto;
+}
+
+.tableWrap table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 520px;
+}
+
+.tableWrap th,
+.tableWrap td {
+  text-align: left;
+  padding: 9px 8px;
+  border-bottom: 1px solid rgba(16, 34, 54, 0.12);
+  color: #2e4d72;
+}
+
+.tableWrap th {
+  color: #1e3d61;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.code {
+  margin-top: 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(16, 34, 54, 0.18);
+  background: #0f1a2b;
+  color: #d5e8ff;
+  padding: 12px;
+  overflow-x: auto;
+  white-space: pre;
+  font-family: var(--font-geist-mono), "JetBrains Mono", "Consolas", monospace;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.pro {
+  margin-top: 10px;
+  border: 1px dashed rgba(16, 34, 54, 0.2);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 0 12px;
+}
+
+.pro summary {
+  cursor: pointer;
+  padding: 10px 0;
+  color: #0d4374;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.pro div {
+  padding: 0 0 11px;
+  color: #365573;
+}
+
+.exampleGrid {
+  margin-top: 12px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.check {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(16, 34, 54, 0.12);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.64);
+  padding: 10px;
+  color: #2f5074;
+}
+
+.check input {
+  width: 16px;
+  height: 16px;
+}
+
+.dailyGrid {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.dailyCard {
+  border: 1px solid rgba(16, 34, 54, 0.14);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 12px;
+}
+
+.dailyMeta {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #4a688c;
+}
+
+.dailyLesson {
+  margin-top: 8px;
+}
+
+@media (max-width: 1020px) {
+  .methodGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .exampleGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .dailyGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 740px) {
+  .twoCol {
+    grid-template-columns: 1fr;
+  }
+
+  .methodGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .dailyGrid {
+    grid-template-columns: 1fr;
+  }
+}

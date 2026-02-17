@@ -1,16 +1,11 @@
-import Link from "next/link";
+import type { Metadata } from "next";
+import Daily6Client from "./daily6-client";
+
+export const metadata: Metadata = {
+  title: "Daily Backend - Dia 6 (Orquestacion)",
+  description: "Leccion corta sobre orquestacion en backend y separacion de responsabilidades.",
+};
 
 export default function Daily6Page() {
-  return (
-    <main style={{ padding: "24px", maxWidth: "760px", margin: "0 auto" }}>
-      <h1>Daily #6</h1>
-      <p>Leccion pendiente de publicacion.</p>
-      <p>
-        <Link href="/daily/5">Volver a Dia 5</Link>
-      </p>
-      <p>
-        <Link href="/daily">Volver al archivo</Link>
-      </p>
-    </main>
-  );
+  return <Daily6Client />;
 }

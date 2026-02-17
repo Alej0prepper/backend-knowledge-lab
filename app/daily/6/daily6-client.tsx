@@ -4,9 +4,6 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import styles from "../daily-lesson.module.css";
 
-const codeSnippet = `if (order.Status == Paid)
-    return; // ya estaba pagado`;
-
 const tocItems = [
   { id: "idea", label: "1) Idea" },
   { id: "ejemplo", label: "2) Ejemplo" },
@@ -16,8 +13,7 @@ const tocItems = [
   { id: "takeaway", label: "Takeaway" },
 ] as const;
 
-export default function Daily5Client() {
-  const [copyLabel, setCopyLabel] = useState("Copiar");
+export default function Daily6Client() {
   const [activeSection, setActiveSection] = useState<string>("idea");
 
   useEffect(() => {
@@ -44,23 +40,12 @@ export default function Daily5Client() {
     const onKeyDown = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
       if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) return;
-      if (event.key.toLowerCase() === "n") window.location.href = "/daily/6";
+      if (event.key.toLowerCase() === "p") window.location.href = "/daily/5";
     };
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
-
-  const onCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(codeSnippet);
-      setCopyLabel("Copiado ✓");
-    } catch {
-      setCopyLabel("No se pudo copiar");
-    } finally {
-      window.setTimeout(() => setCopyLabel("Copiar"), 1200);
-    }
-  };
 
   const tocLinkClass = useMemo(
     () => (id: string) => `${styles.tocLink} ${activeSection === id ? styles.active : ""}`,
@@ -92,11 +77,11 @@ export default function Daily5Client() {
           </nav>
 
           <div className={styles.actions}>
-            <Link className={styles.btn} href="/daily">
-              <span className={styles.kbd}>←</span> Volver
+            <Link className={styles.btn} href="/daily/5">
+              <span className={styles.kbd}>←</span> Dia 5
             </Link>
-            <Link className={`${styles.btn} ${styles.primary}`} href="#next">
-              Dia 6 <span className={styles.kbd}>N</span>
+            <Link className={`${styles.btn} ${styles.primary}`} href="#idea">
+              Empezar
             </Link>
           </div>
         </div>
@@ -107,20 +92,20 @@ export default function Daily5Client() {
           <article className={styles.card}>
             <div className={styles.bd}>
               <div className={styles.dailyHero}>
-                <div className={styles.badge}>Daily #5 • Backend Foundations</div>
-                <h2 className={styles.title}>Idempotencia: por que repetir una accion no siempre debe romper todo</h2>
+                <div className={styles.badge}>Daily #6 • Backend Foundations</div>
+                <h2 className={styles.title}>El backend no &quot;hace cosas&quot;, orquesta cosas</h2>
 
                 <div className={styles.meta} aria-label="Metadata">
                   <span className={`${styles.chip} ${styles.chipOk}`}>3-6 min</span>
                   <span className={styles.chip}>Nivel: Principiante</span>
-                  <span className={`${styles.chip} ${styles.chipPro}`}>Tag: REST</span>
-                  <span className={styles.chip}>Tag: Confiabilidad</span>
+                  <span className={`${styles.chip} ${styles.chipPro}`}>Tag: Arquitectura</span>
+                  <span className={styles.chip}>Tag: Orquestacion</span>
                   <span className={styles.chip}>.NET</span>
                 </div>
 
                 <p className={styles.lead}>
-                  Hoy aprendes un concepto que evita bugs caros: como disenar acciones para que <strong>reintentos</strong>
-                  y <strong>requests duplicadas</strong> no causen dobles cobros o estados corruptos.
+                  Un backend senior no intenta hacerlo todo solo. Coordina responsabilidades para que el flujo sea
+                  consistente incluso cuando hay fallos parciales.
                 </p>
 
                 <div className={styles.jump}>
@@ -130,8 +115,8 @@ export default function Daily5Client() {
                   <a className={styles.btn} href="#takeaway">
                     Idea final
                   </a>
-                  <Link className={styles.btn} href="/rest#methods">
-                    Ver contexto REST ATLAS
+                  <Link className={styles.btn} href="/rest-lite#aprendizaje-diario">
+                    Ver en REST Lite
                   </Link>
                 </div>
               </div>
@@ -148,22 +133,17 @@ export default function Daily5Client() {
                 <div className={styles.shd}>
                   <div>
                     <h3>1. La idea clave</h3>
-                    <p className={styles.sub}>
-                      Idempotencia significa que repetir la misma peticion produce el mismo estado final que hacerla
-                      una sola vez.
-                    </p>
+                    <p className={styles.sub}>Backend profesional = orquestacion de piezas, no codigo monolitico.</p>
                   </div>
                   <span className={styles.chip}>Concepto</span>
                 </div>
                 <div className={styles.sbd}>
                   <div className={styles.callout}>
-                    <strong>Idempotencia</strong> = repetir no debe corromper el estado final del sistema.
+                    Coordina reglas, datos y servicios externos para producir un resultado consistente.
                   </div>
                   <div className={styles.quote}>
-                    No significa &quot;no pasa nada&quot;. Significa &quot;el sistema no termina en un estado
-                    incorrecto&quot;.
+                    El backend no inventa nada. <strong>Orquesta componentes</strong>.
                   </div>
-
                 </div>
               </section>
 
@@ -171,21 +151,20 @@ export default function Daily5Client() {
                 <div className={styles.shd}>
                   <div>
                     <h3>2. Ejemplo real</h3>
-                    <p className={styles.sub}>El caso tipico: doble procesamiento por reintentos.</p>
+                    <p className={styles.sub}>Crear un pedido suele ser un flujo de varias dependencias.</p>
                   </div>
                   <span className={styles.chip}>Escenario</span>
                 </div>
                 <div className={styles.sbd}>
                   <ul className={styles.bullets}>
-                    <li>El usuario paga un pedido.</li>
-                    <li>La red falla.</li>
-                    <li>El frontend reintenta.</li>
-                    <li>El backend procesa dos veces el pago.</li>
+                    <li>Validar usuario</li>
+                    <li>Verificar stock</li>
+                    <li>Calcular precio</li>
+                    <li>Aplicar descuentos</li>
+                    <li>Guardar en base de datos</li>
+                    <li>Enviar evento</li>
+                    <li>Notificar</li>
                   </ul>
-
-                  <div className={styles.quote}>
-                    Un backend profesional se pregunta: <strong>&quot;Que pasa si esto se ejecuta dos veces?&quot;</strong>
-                  </div>
 
                 </div>
               </section>
@@ -194,21 +173,17 @@ export default function Daily5Client() {
                 <div className={styles.shd}>
                   <div>
                     <h3>3. Como piensa un backend developer</h3>
-                    <p className={styles.sub}>No confia en el happy path. Disena para fallos.</p>
+                    <p className={styles.sub}>No mete todo en un metodo. Disena responsabilidades claras.</p>
                   </div>
                   <span className={styles.chip}>Mentalidad</span>
                 </div>
                 <div className={styles.sbd}>
-                  <div className={styles.callout}>
-                    Un backend serio no asume que el cliente enviara una sola vez. Disena para duplicacion.
-                  </div>
+                  <div className={styles.callout}>Piensa en orden, dependencias y fallos parciales.</div>
                   <ul className={styles.bullets}>
-                    <li>Reintentos automaticos</li>
-                    <li>Requests duplicadas</li>
-                    <li>Doble clic del usuario</li>
-                    <li>Eventos repetidos</li>
+                    <li>Quien es responsable de cada parte?</li>
+                    <li>Que depende de que?</li>
+                    <li>Que pasa si falla una parte?</li>
                   </ul>
-
                 </div>
               </section>
 
@@ -216,27 +191,20 @@ export default function Daily5Client() {
                 <div className={styles.shd}>
                   <div>
                     <h3>4. Como se ve en .NET</h3>
-                    <p className={styles.sub}>Patrones simples que ya previenen bugs graves.</p>
+                    <p className={styles.sub}>Flujo tipico para coordinar bien el dominio y la infraestructura.</p>
                   </div>
                   <span className={styles.chip}>Implementacion</span>
                 </div>
                 <div className={styles.sbd}>
-                  <ul className={styles.bullets}>
-                    <li>Verificar si ya existe el registro antes de crear</li>
-                    <li>Claves unicas en base de datos</li>
-                    <li>Transacciones</li>
-                    <li>Comprobar estado antes de cambiar</li>
-                  </ul>
+                  <pre>{`Controller
+  -> Application Service
+     -> Repositories
+     -> Servicios externos
+  -> Transaccion`}</pre>
 
-                  <pre>{codeSnippet}</pre>
-
-                  <div className={styles.codebar}>
-                    <div className={styles.hint}>Esto es idempotencia por estado: protege transiciones repetidas.</div>
-                    <button type="button" className={styles.copy} onClick={onCopy}>
-                      {copyLabel}
-                    </button>
+                  <div className={styles.quote}>
+                    Si un metodo de aplicacion tiene 200 lineas haciendo todo, hay falta de orquestacion limpia.
                   </div>
-
                 </div>
               </section>
 
@@ -244,17 +212,15 @@ export default function Daily5Client() {
                 <div className={styles.shd}>
                   <div>
                     <h3>5. Como lo detectas como tester</h3>
-                    <p className={styles.sub}>Los bugs serios aparecen cuando duplicas acciones.</p>
+                    <p className={styles.sub}>Muchos bugs aparecen por el orden de ejecucion, no por una sola regla.</p>
                   </div>
                   <span className={styles.chip}>Testing</span>
                 </div>
                 <div className={styles.sbd}>
-                  <div className={styles.callout}>Prueba siempre la duplicacion: ahi nacen los incidentes raros.</div>
-
                   <ul className={styles.bullets}>
-                    <li>Que pasa si envio la misma request 2 veces rapido?</li>
-                    <li>Que pasa si refresco mientras procesa?</li>
-                    <li>Que pasa si reintento desde Postman?</li>
+                    <li>Fallo una pieza puntual?</li>
+                    <li>O fallo la coordinacion entre piezas?</li>
+                    <li>Se guardo algo antes de validar una condicion critica?</li>
                   </ul>
 
                 </div>
@@ -264,27 +230,24 @@ export default function Daily5Client() {
                 <div className={styles.shd}>
                   <div>
                     <h3>Idea que te llevas hoy</h3>
-                    <p className={styles.sub}>Cambia tu forma de pensar acciones.</p>
+                    <p className={styles.sub}>Subir de nivel es pensar en sistema, no en funciones sueltas.</p>
                   </div>
                   <span className={`${styles.chip} ${styles.chipOk}`}>Cierre</span>
                 </div>
                 <div className={styles.sbd}>
                   <div className={styles.quote}>
-                    <strong>Un backend profesional no confia en que las acciones ocurren una sola vez.</strong>
+                    <strong>Un backend senior escribe codigo para coordinar responsabilidades.</strong>
                   </div>
-                  <p className={styles.sub}>
-                    Si empiezas a pensar en duplicacion automatica, ya estas subiendo de nivel.
-                  </p>
 
                   <div className={styles.footerNav} id="next">
-                    <Link className={styles.btn} href="/daily/4">
-                      ← Dia 4
-                    </Link>
-                    <Link className={`${styles.btn} ${styles.primary}`} href="/daily/6">
-                      Dia 6 →
+                    <Link className={styles.btn} href="/daily/5">
+                      ← Dia 5
                     </Link>
                     <Link className={styles.btn} href="/daily">
                       Ver archivo
+                    </Link>
+                    <Link className={`${styles.btn} ${styles.primary}`} href="/rest-lite">
+                      REST Lite
                     </Link>
                   </div>
                 </div>
@@ -297,7 +260,7 @@ export default function Daily5Client() {
               <div className={styles.hd}>
                 <div>
                   <h2>Resumen rapido</h2>
-                  <p>Lo minimo que debes recordar.</p>
+                  <p>Lo esencial del Dia 6.</p>
                 </div>
               </div>
               <div className={styles.bd}>
@@ -305,29 +268,17 @@ export default function Daily5Client() {
                   <div className={styles.k}>
                     Idea en 1 frase <span className={`${styles.chip} ${styles.chipOk}`}>clave</span>
                   </div>
-                  <div className={styles.v}>Repetir una peticion no debe romper el estado final del sistema.</div>
+                  <div className={styles.v}>Backend = coordinacion clara de piezas con responsabilidades pequenas.</div>
                 </div>
 
                 <div className={styles.li}>
-                  <strong>Ejemplo:</strong> reintento de pago -&gt; evita doble cobro.
+                  <strong>Riesgo comun:</strong> metodo gigante que valida, guarda, notifica y publica eventos junto.
                 </div>
                 <div className={styles.li}>
-                  <strong>Patron:</strong> validar estado antes de transicionar (`Paid`).
+                  <strong>Deteccion:</strong> bugs por orden incorrecto de pasos.
                 </div>
                 <div className={styles.li}>
-                  <strong>Testing:</strong> envia la misma request 2 veces rapido.
-                </div>
-
-                <div className={styles.li}>
-                  <strong>Relacionado en REST ATLAS</strong>
-                  <div className={styles.relatedLinks}>
-                    <Link className={styles.pill} href="/rest#methods">
-                      Semantica HTTP
-                    </Link>
-                    <Link className={styles.pill} href="/rest#rubric">
-                      Contrato robusto
-                    </Link>
-                  </div>
+                  <strong>En .NET:</strong> Controller -&gt; App Service -&gt; repos/servicios externos.
                 </div>
               </div>
             </div>
@@ -340,13 +291,9 @@ export default function Daily5Client() {
                 </div>
               </div>
               <div className={styles.bd}>
-                <div className={styles.li}>✅ Puede ejecutarse dos veces sin duplicar efectos?</div>
-                <div className={styles.li}>✅ Hay control por estado, constraint o key?</div>
-                <div className={styles.li}>✅ La respuesta es consistente si ya se proceso?</div>
-
-                <div className={styles.li}>
-                  <strong>Atajo:</strong> agrega un test de reintento en tu suite.
-                </div>
+                <div className={styles.li}>✅ Cada pieza tiene una sola responsabilidad?</div>
+                <div className={styles.li}>✅ El flujo de orquestacion tiene orden explicito?</div>
+                <div className={styles.li}>✅ Si falla un paso, el sistema queda consistente?</div>
               </div>
             </div>
           </aside>

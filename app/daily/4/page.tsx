@@ -1,16 +1,11 @@
-import Link from "next/link";
+import type { Metadata } from "next";
+import Daily4Client from "./daily4-client";
+
+export const metadata: Metadata = {
+  title: "Daily Backend - Dia 4",
+  description: "Leccion corta de backend (pendiente de publicacion) con estilo unificado.",
+};
 
 export default function Daily4Page() {
-  return (
-    <main style={{ padding: "24px", maxWidth: "760px", margin: "0 auto" }}>
-      <h1>Daily #4</h1>
-      <p>Leccion pendiente de publicacion.</p>
-      <p>
-        <Link href="/daily/5">Ir a Dia 5</Link>
-      </p>
-      <p>
-        <Link href="/daily">Volver al archivo</Link>
-      </p>
-    </main>
-  );
+  return <Daily4Client />;
 }

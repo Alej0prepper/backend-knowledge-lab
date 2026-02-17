@@ -51,6 +51,12 @@ const statusRows = [
 
 const dailyLessons = [
   {
+    date: "2026-02-17",
+    title: "Backend = orquestacion",
+    lesson:
+      "Un backend senior coordina responsabilidades: valida, consulta, persiste y publica eventos en el orden correcto.",
+  },
+  {
     date: "2026-02-16",
     title: "401 vs 403",
     lesson: "401 es identidad invalida o ausente; 403 es identidad valida pero sin permiso.",

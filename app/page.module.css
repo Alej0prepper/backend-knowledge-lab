@@ -6,10 +6,36 @@
   min-height: 100vh;
   padding: 28px 16px 52px;
   background:
-    radial-gradient(1000px 600px at 10% -8%, rgba(124, 92, 255, 0.2), transparent 54%),
-    radial-gradient(900px 580px at 100% 2%, rgba(35, 194, 255, 0.14), transparent 54%),
-    radial-gradient(700px 520px at 50% 100%, rgba(16, 185, 129, 0.12), transparent 54%),
-    #0b0f17;
+    radial-gradient(1000px 600px at 10% -8%, rgba(229, 37, 33, 0.26), transparent 54%),
+    radial-gradient(900px 580px at 100% 2%, rgba(4, 156, 216, 0.20), transparent 54%),
+    radial-gradient(700px 520px at 50% 100%, rgba(67, 176, 71, 0.18), transparent 54%),
+    #0f3d8f;
+  position: relative;
+  overflow: hidden;
+}
+
+.page::before,
+.page::after {
+  content: "";
+  position: absolute;
+  width: 220px;
+  height: 90px;
+  border-radius: 80px;
+  background: rgba(255, 255, 255, 0.35);
+  filter: blur(0.5px);
+  z-index: 0;
+  animation: cloudDrift 14s linear infinite;
+}
+
+.page::before {
+  top: 44px;
+  left: -70px;
+}
+
+.page::after {
+  top: 110px;
+  right: -100px;
+  animation-duration: 18s;
 }
 
 .hero {
@@ -20,6 +46,9 @@
   background: linear-gradient(180deg, rgba(15, 22, 35, 0.92), rgba(12, 18, 32, 0.92));
   box-shadow: 0 14px 36px rgba(0, 0, 0, 0.3);
   padding: 22px;
+  position: relative;
+  z-index: 1;
+  animation: riseIn 520ms ease-out;
 }
 
 .heroContent {
@@ -34,7 +63,7 @@
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(35, 194, 255, 0.86);
+  color: rgba(251, 208, 0, 0.96);
 }
 
 .hero h1 {
@@ -63,7 +92,7 @@
   padding: 4px 9px;
   font-size: 12px;
   color: rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .actions {
@@ -84,20 +113,32 @@
 
 .button {
   border: 1px solid var(--stroke);
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.08);
   color: var(--text);
 }
 
 .buttonPrimary {
-  border: 1px solid rgba(124, 92, 255, 0.68);
-  background: linear-gradient(180deg, rgba(124, 92, 255, 0.34), rgba(124, 92, 255, 0.2));
+  border: 1px solid rgba(229, 37, 33, 0.8);
+  background: linear-gradient(180deg, rgba(229, 37, 33, 0.5), rgba(229, 37, 33, 0.26));
   color: #f8fcff;
+}
+
+.button,
+.buttonPrimary,
+.lessonCard {
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.button:hover,
+.buttonPrimary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(9, 26, 57, 0.34);
 }
 
 .heroPreview {
   border: 1px solid var(--stroke);
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.08);
   padding: 12px;
 }
 
@@ -115,8 +156,8 @@
   border-radius: 12px;
   min-height: 210px;
   background:
-    radial-gradient(320px 180px at 15% 20%, rgba(124, 92, 255, 0.18), transparent 58%),
-    radial-gradient(260px 170px at 90% 80%, rgba(35, 194, 255, 0.16), transparent 58%),
+    radial-gradient(320px 180px at 15% 20%, rgba(251, 208, 0, 0.28), transparent 58%),
+    radial-gradient(260px 170px at 90% 80%, rgba(4, 156, 216, 0.28), transparent 58%),
     rgba(255, 255, 255, 0.02);
   display: grid;
   place-content: center;
@@ -147,6 +188,9 @@
   background: linear-gradient(180deg, rgba(15, 22, 35, 0.92), rgba(12, 18, 32, 0.92));
   box-shadow: 0 14px 36px rgba(0, 0, 0, 0.3);
   padding: 18px;
+  position: relative;
+  z-index: 1;
+  animation: riseIn 650ms ease-out;
 }
 
 .dailyHeader h2 {
@@ -171,17 +215,23 @@
   text-decoration: none;
   border-radius: 14px;
   border: 1px solid var(--stroke);
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.08);
   padding: 12px;
   display: grid;
   gap: 8px;
+}
+
+.lessonCard:hover {
+  transform: translateY(-3px);
+  border-color: rgba(251, 208, 0, 0.62);
+  box-shadow: 0 10px 24px rgba(14, 32, 73, 0.28);
 }
 
 .day {
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(35, 194, 255, 0.82);
+  color: rgba(251, 208, 0, 0.92);
 }
 
 .lessonCard h3 {
@@ -207,5 +257,25 @@
 
   .dailyGrid {
     grid-template-columns: 1fr;
+  }
+}
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cloudDrift {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(80px);
   }
 }

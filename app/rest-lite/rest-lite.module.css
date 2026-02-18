@@ -1,10 +1,23 @@
 .page {
   min-height: 100vh;
   background:
-    radial-gradient(850px 520px at 0% -10%, rgba(0, 120, 212, 0.12), transparent 52%),
-    radial-gradient(700px 420px at 100% 0%, rgba(16, 185, 129, 0.1), transparent 55%),
-    linear-gradient(180deg, #f7f8fb 0%, #eef2f8 100%);
-  color: #102236;
+    radial-gradient(850px 520px at 0% -10%, rgba(4, 156, 216, 0.24), transparent 52%),
+    radial-gradient(700px 420px at 100% 0%, rgba(67, 176, 71, 0.18), transparent 55%),
+    linear-gradient(180deg, #8fd9ff 0%, #6fc2ff 100%);
+  color: #12213a;
+  position: relative;
+  overflow: hidden;
+}
+
+.page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120px 60px at 15% 12%, rgba(255, 255, 255, 0.4), transparent 60%),
+    radial-gradient(160px 80px at 82% 18%, rgba(255, 255, 255, 0.35), transparent 62%);
+  pointer-events: none;
+  animation: skyShift 10s ease-in-out infinite alternate;
 }
 
 .container {
@@ -21,6 +34,7 @@
   background: rgba(255, 255, 255, 0.86);
   box-shadow: 0 14px 32px rgba(13, 32, 59, 0.1);
   padding: 22px;
+  animation: jumpIn 460ms ease-out;
 }
 
 .kicker {
@@ -28,7 +42,7 @@
   font-size: 12px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #375579;
+  color: #e52521;
 }
 
 .hero h1 {
@@ -39,7 +53,7 @@
 
 .lead {
   margin: 0;
-  color: #3f5a7a;
+  color: #1c3f72;
   line-height: 1.5;
 }
 
@@ -65,13 +79,36 @@
 
 .button {
   background: rgba(255, 255, 255, 0.7);
-  color: #15375c;
+  color: #112b53;
 }
 
 .buttonPrimary {
-  background: linear-gradient(180deg, rgba(0, 120, 212, 0.95), rgba(0, 99, 176, 0.95));
-  border-color: rgba(0, 120, 212, 0.7);
+  background: linear-gradient(180deg, rgba(229, 37, 33, 0.96), rgba(185, 22, 20, 0.96));
+  border-color: rgba(229, 37, 33, 0.76);
   color: #f7fbff;
+}
+
+.button,
+.buttonPrimary,
+.quickNav a,
+.methodCard,
+.dailyCard,
+.section {
+  transition: transform 170ms ease, box-shadow 170ms ease, border-color 170ms ease;
+}
+
+.button:hover,
+.buttonPrimary:hover,
+.quickNav a:hover {
+  transform: translateY(-2px);
+}
+
+.section:hover,
+.methodCard:hover,
+.dailyCard:hover {
+  transform: translateY(-2px);
+  border-color: rgba(4, 156, 216, 0.46);
+  box-shadow: 0 10px 24px rgba(18, 49, 89, 0.14);
 }
 
 .quickNav {
@@ -118,7 +155,7 @@
 
 .section p {
   margin: 8px 0 0;
-  color: #3f5a7a;
+  color: #1c3f72;
   line-height: 1.5;
 }
 
@@ -140,10 +177,10 @@
 .highlight {
   margin-top: 12px;
   border-radius: 12px;
-  border: 1px solid rgba(0, 120, 212, 0.32);
-  background: rgba(0, 120, 212, 0.08);
+  border: 1px solid rgba(251, 208, 0, 0.45);
+  background: rgba(251, 208, 0, 0.2);
   padding: 12px;
-  color: #114679;
+  color: #7a3d00;
   font-weight: 550;
 }
 
@@ -191,7 +228,7 @@
 .methodCard span {
   display: inline-block;
   margin-top: 8px;
-  color: #3f5a7a;
+  color: #1c3f72;
   font-size: 12px;
 }
 
@@ -331,5 +368,25 @@
 
   .dailyGrid {
     grid-template-columns: 1fr;
+  }
+}
+
+@keyframes jumpIn {
+  from {
+    transform: translateY(10px) scale(0.98);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes skyShift {
+  from {
+    transform: translateX(-10px);
+  }
+  to {
+    transform: translateX(12px);
   }
 }

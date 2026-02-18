@@ -15,6 +15,9 @@ export default function DailyIndexPage() {
         <li>
           <Link href="/daily/6">Dia 6</Link>
         </li>
+        <li>
+          <Link href="/daily/7">Dia 7 - Transacciones y consistencia</Link>
+        </li>
       </ul>
       <p>
         <Link href="/rest-lite">Volver a REST Lite</Link>

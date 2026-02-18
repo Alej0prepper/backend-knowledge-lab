@@ -13,7 +13,41 @@ const tocItems = [
   { id: "takeaway", label: "Takeaway" },
 ] as const;
 
-export default function Daily6Client() {
+const transactionSnippet = `public async Task<Guid> CreateOrderAsync(CreateOrderCommand command, CancellationToken ct)
+{
+  await using var tx = await _db.Database.BeginTransactionAsync(ct);
+
+  try
+  {
+    var stock = await _db.Stocks.SingleAsync(x => x.Sku == command.Sku, ct);
+    if (stock.Available < command.Qty) throw new InvalidOperationException("Insufficient stock");
+
+    stock.Available -= command.Qty;
+
+    var order = new Order(command.CustomerId, command.Sku, command.Qty, command.Amount);
+    _db.Orders.Add(order);
+
+    var payment = new Payment(order.Id, command.Amount, "registered");
+    _db.Payments.Add(payment);
+
+    await _db.SaveChangesAsync(ct);
+    await tx.CommitAsync(ct);
+
+    return order.Id;
+  }
+  catch
+  {
+    await tx.RollbackAsync(ct);
+    throw;
+  }
+}`;
+
+const checklistSnippet = `[ ] Fuerza error despues de descontar stock
+[ ] Verifica que no exista pedido parcial
+[ ] Verifica que el stock no quede descontado
+[ ] Repite con timeout/cancelacion`;
+
+export default function Daily7Client() {
   const [activeSection, setActiveSection] = useState<string>("idea");
 
   useEffect(() => {
@@ -40,8 +74,7 @@ export default function Daily6Client() {
     const onKeyDown = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
       if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) return;
-      if (event.key.toLowerCase() === "p") window.location.href = "/daily/5";
-      if (event.key.toLowerCase() === "n") window.location.href = "/daily/7";
+      if (event.key.toLowerCase() === "p") window.location.href = "/daily/6";
     };
 
     window.addEventListener("keydown", onKeyDown);
@@ -69,8 +102,8 @@ export default function Daily6Client() {
             <Link className={styles.pill} href="/daily">
               Archivo
             </Link>
-            <Link className={styles.pill} href="/rest">
-              REST ATLAS
+            <Link className={styles.pill} href="/rest-lite">
+              REST Lite
             </Link>
             <Link className={styles.pill} href="/">
               Sobre mi
@@ -78,11 +111,11 @@ export default function Daily6Client() {
           </nav>
 
           <div className={styles.actions}>
-            <Link className={styles.btn} href="/daily/5">
-              <span className={styles.kbd}>←</span> Dia 5
+            <Link className={styles.btn} href="/daily/6">
+              <span className={styles.kbd}>←</span> Dia 6
             </Link>
-            <Link className={`${styles.btn} ${styles.primary}`} href="/daily/7">
-              Dia 7 <span className={styles.kbd}>N</span>
+            <Link className={`${styles.btn} ${styles.primary}`} href="#idea">
+              Empezar
             </Link>
           </div>
         </div>
@@ -93,33 +126,21 @@ export default function Daily6Client() {
           <article className={styles.card}>
             <div className={styles.bd}>
               <div className={styles.dailyHero}>
-                <div className={styles.badge}>Daily #6 • Backend Foundations</div>
-                <h2 className={styles.title}>El backend no &quot;hace cosas&quot;, orquesta cosas</h2>
+                <div className={styles.badge}>Daily #7 • Backend Foundations</div>
+                <h2 className={styles.title}>Transacciones: el backend protege la consistencia</h2>
 
                 <div className={styles.meta} aria-label="Metadata">
                   <span className={`${styles.chip} ${styles.chipOk}`}>3-6 min</span>
                   <span className={styles.chip}>Nivel: Principiante</span>
-                  <span className={`${styles.chip} ${styles.chipPro}`}>Tag: Arquitectura</span>
-                  <span className={styles.chip}>Tag: Orquestacion</span>
-                  <span className={styles.chip}>.NET</span>
+                  <span className={`${styles.chip} ${styles.chipPro}`}>Tag: Consistencia</span>
+                  <span className={styles.chip}>Tag: .NET</span>
+                  <span className={styles.chip}>Tag: Transacciones</span>
                 </div>
 
                 <p className={styles.lead}>
-                  Un backend senior no intenta hacerlo todo solo. Coordina responsabilidades para que el flujo sea
-                  consistente incluso cuando hay fallos parciales.
+                  Una transaccion significa: o todo ocurre correctamente, o no ocurre nada. Un backend profesional
+                  protege el sistema contra estados intermedios corruptos.
                 </p>
-
-                <div className={styles.jump}>
-                  <a className={`${styles.btn} ${styles.primary}`} href="#idea">
-                    Empezar
-                  </a>
-                  <a className={styles.btn} href="#takeaway">
-                    Idea final
-                  </a>
-                  <Link className={styles.btn} href="/rest-lite#aprendizaje-diario">
-                    Ver en REST Lite
-                  </Link>
-                </div>
               </div>
 
               <nav className={styles.toc} aria-label="Indice">
@@ -134,16 +155,13 @@ export default function Daily6Client() {
                 <div className={styles.shd}>
                   <div>
                     <h3>1. La idea clave</h3>
-                    <p className={styles.sub}>Backend profesional = orquestacion de piezas, no codigo monolitico.</p>
+                    <p className={styles.sub}>O todo ocurre correctamente, o no ocurre nada.</p>
                   </div>
                   <span className={styles.chip}>Concepto</span>
                 </div>
                 <div className={styles.sbd}>
                   <div className={styles.callout}>
-                    Coordina reglas, datos y servicios externos para producir un resultado consistente.
-                  </div>
-                  <div className={styles.quote}>
-                    El backend no inventa nada. <strong>Orquesta componentes</strong>.
+                    El backend profesional protege el sistema contra estados intermedios corruptos.
                   </div>
                 </div>
               </section>
@@ -152,21 +170,21 @@ export default function Daily6Client() {
                 <div className={styles.shd}>
                   <div>
                     <h3>2. Ejemplo real</h3>
-                    <p className={styles.sub}>Crear un pedido suele ser un flujo de varias dependencias.</p>
+                    <p className={styles.sub}>Crear pedido puede implicar varias operaciones criticas.</p>
                   </div>
                   <span className={styles.chip}>Escenario</span>
                 </div>
                 <div className={styles.sbd}>
                   <ul className={styles.bullets}>
-                    <li>Validar usuario</li>
-                    <li>Verificar stock</li>
-                    <li>Calcular precio</li>
-                    <li>Aplicar descuentos</li>
-                    <li>Guardar en base de datos</li>
-                    <li>Enviar evento</li>
-                    <li>Notificar</li>
+                    <li>Descontar stock.</li>
+                    <li>Crear pedido.</li>
+                    <li>Registrar pago.</li>
                   </ul>
 
+                  <div className={styles.quote}>
+                    Si se descuenta stock y luego falla el guardado del pedido, sin transaccion queda inconsistente.
+                    Con transaccion, haces rollback automatico.
+                  </div>
                 </div>
               </section>
 
@@ -174,16 +192,15 @@ export default function Daily6Client() {
                 <div className={styles.shd}>
                   <div>
                     <h3>3. Como piensa un backend developer</h3>
-                    <p className={styles.sub}>No mete todo en un metodo. Disena responsabilidades claras.</p>
+                    <p className={styles.sub}>No piensa solo en que funcione, piensa en que no rompa al fallar.</p>
                   </div>
                   <span className={styles.chip}>Mentalidad</span>
                 </div>
                 <div className={styles.sbd}>
-                  <div className={styles.callout}>Piensa en orden, dependencias y fallos parciales.</div>
                   <ul className={styles.bullets}>
-                    <li>Quien es responsable de cada parte?</li>
-                    <li>Que depende de que?</li>
-                    <li>Que pasa si falla una parte?</li>
+                    <li>Que pasa si falla en el paso 3?</li>
+                    <li>El sistema queda en estado invalido?</li>
+                    <li>Puedo revertir?</li>
                   </ul>
                 </div>
               </section>
@@ -192,20 +209,23 @@ export default function Daily6Client() {
                 <div className={styles.shd}>
                   <div>
                     <h3>4. Como se ve en .NET</h3>
-                    <p className={styles.sub}>Flujo tipico para coordinar bien el dominio y la infraestructura.</p>
+                    <p className={styles.sub}>Consistencia con transaccion explicita y rollback en error.</p>
                   </div>
                   <span className={styles.chip}>Implementacion</span>
                 </div>
                 <div className={styles.sbd}>
-                  <pre>{`Controller
-  -> Application Service
-     -> Repositories
-     -> Servicios externos
-  -> Transaccion`}</pre>
-
-                  <div className={styles.quote}>
-                    Si un metodo de aplicacion tiene 200 lineas haciendo todo, hay falta de orquestacion limpia.
+                  <div className={styles.callout}>
+                    EF Core maneja transacciones por defecto en `SaveChanges()`, pero con multiples operaciones
+                    criticas conviene agruparlas de forma explicita.
                   </div>
+
+                  <pre>{transactionSnippet}</pre>
+
+                  <ul className={styles.bullets}>
+                    <li>`DbContext` con `SaveChanges()` dentro de transaccion.</li>
+                    <li>`TransactionScope` para escenarios mas amplios.</li>
+                    <li>Unit of Work implicito en EF Core.</li>
+                  </ul>
                 </div>
               </section>
 
@@ -213,17 +233,22 @@ export default function Daily6Client() {
                 <div className={styles.shd}>
                   <div>
                     <h3>5. Como lo detectas como tester</h3>
-                    <p className={styles.sub}>Muchos bugs aparecen por el orden de ejecucion, no por una sola regla.</p>
+                    <p className={styles.sub}>Muchos bugs graves de produccion nacen justo aqui.</p>
                   </div>
                   <span className={styles.chip}>Testing</span>
                 </div>
                 <div className={styles.sbd}>
                   <ul className={styles.bullets}>
-                    <li>Fallo una pieza puntual?</li>
-                    <li>O fallo la coordinacion entre piezas?</li>
-                    <li>Se guardo algo antes de validar una condicion critica?</li>
+                    <li>Forzar error a mitad del proceso.</li>
+                    <li>Simular caida.</li>
+                    <li>Cancelar request en medio de operacion.</li>
                   </ul>
 
+                  <div className={styles.quote}>
+                    Preguntate: el sistema quedo en estado raro? hay datos a medias?
+                  </div>
+
+                  <pre>{checklistSnippet}</pre>
                 </div>
               </section>
 
@@ -231,26 +256,23 @@ export default function Daily6Client() {
                 <div className={styles.shd}>
                   <div>
                     <h3>Idea que te llevas hoy</h3>
-                    <p className={styles.sub}>Subir de nivel es pensar en sistema, no en funciones sueltas.</p>
+                    <p className={styles.sub}>No solo ejecutes acciones; protege la integridad del sistema.</p>
                   </div>
                   <span className={`${styles.chip} ${styles.chipOk}`}>Cierre</span>
                 </div>
                 <div className={styles.sbd}>
                   <div className={styles.quote}>
-                    <strong>Un backend senior escribe codigo para coordinar responsabilidades.</strong>
+                    Cuando empiezas a pensar en que pasa si se rompe en el medio, subes de nivel real.
                   </div>
 
-                  <div className={styles.footerNav} id="next">
-                    <Link className={styles.btn} href="/daily/5">
-                      ← Dia 5
-                    </Link>
-                    <Link className={`${styles.btn} ${styles.primary}`} href="/daily/7">
-                      Dia 7 →
+                  <div className={styles.footerNav}>
+                    <Link className={styles.btn} href="/daily/6">
+                      ← Dia 6
                     </Link>
                     <Link className={styles.btn} href="/daily">
                       Ver archivo
                     </Link>
-                    <Link className={styles.btn} href="/rest-lite">
+                    <Link className={`${styles.btn} ${styles.primary}`} href="/rest-lite#aprendizaje-diario">
                       REST Lite
                     </Link>
                   </div>
@@ -264,40 +286,19 @@ export default function Daily6Client() {
               <div className={styles.hd}>
                 <div>
                   <h2>Resumen rapido</h2>
-                  <p>Lo esencial del Dia 6.</p>
+                  <p>Dia 7 en una vista.</p>
                 </div>
               </div>
               <div className={styles.bd}>
-                <div className={styles.mini}>
-                  <div className={styles.k}>
-                    Idea en 1 frase <span className={`${styles.chip} ${styles.chipOk}`}>clave</span>
-                  </div>
-                  <div className={styles.v}>Backend = coordinacion clara de piezas con responsabilidades pequenas.</div>
-                </div>
-
                 <div className={styles.li}>
-                  <strong>Riesgo comun:</strong> metodo gigante que valida, guarda, notifica y publica eventos junto.
+                  <strong>Idea clave:</strong> o todo se confirma, o todo se revierte.
                 </div>
                 <div className={styles.li}>
-                  <strong>Deteccion:</strong> bugs por orden incorrecto de pasos.
+                  <strong>.NET:</strong> `BeginTransactionAsync` + `CommitAsync` + `RollbackAsync`.
                 </div>
                 <div className={styles.li}>
-                  <strong>En .NET:</strong> Controller -&gt; App Service -&gt; repos/servicios externos.
+                  <strong>Riesgo:</strong> estados intermedios corruptos si falla a mitad de flujo.
                 </div>
-              </div>
-            </div>
-
-            <div className={styles.card}>
-              <div className={styles.hd}>
-                <div>
-                  <h2>Checklist (30s)</h2>
-                  <p>Para aplicarlo hoy mismo.</p>
-                </div>
-              </div>
-              <div className={styles.bd}>
-                <div className={styles.li}>✅ Cada pieza tiene una sola responsabilidad?</div>
-                <div className={styles.li}>✅ El flujo de orquestacion tiene orden explicito?</div>
-                <div className={styles.li}>✅ Si falla un paso, el sistema queda consistente?</div>
               </div>
             </div>
           </aside>

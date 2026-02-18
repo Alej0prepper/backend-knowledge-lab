@@ -51,6 +51,12 @@ const statusRows = [
 
 const dailyLessons = [
   {
+    date: "2026-02-18",
+    title: ".NET Minimal API",
+    lesson:
+      "En ASP.NET Core puedes mapear endpoints REST como /daily/7 con MapGet/MapPost y responder con Results.Ok/Results.Created.",
+  },
+  {
     date: "2026-02-17",
     title: "Backend = orquestacion",
     lesson:
@@ -159,6 +165,43 @@ export default function RestLitePage() {
   title: "Nombre corto de la leccion",
   lesson: "Aprendizaje breve y concreto del dia."
 }`}</pre>
+
+          <h3>Ejemplo rapido en .NET (ASP.NET Core Minimal API)</h3>
+          <pre className={styles.code}>{`using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+app.MapGet("/daily/7", () =>
+{
+  return Results.Ok(new { day = 7, topic = "REST", status = "ready" });
+});
+
+app.MapPost("/daily/7", (CreateOrderRequest request) =>
+{
+  if (request.Items.Count == 0)
+  {
+    return Results.BadRequest(new
+    {
+      code = "ORDER_ITEMS_REQUIRED",
+      detail = "At least one item is required"
+    });
+  }
+
+  var orderId = $"ord_{Guid.NewGuid():N}";
+
+  return Results.Created($"/daily/7/{orderId}", new
+  {
+    id = orderId,
+    status = "created"
+  });
+});
+
+app.Run();
+
+public record CreateOrderRequest(string CustomerId, List<OrderItem> Items);
+public record OrderItem(string Sku, int Qty, decimal UnitPrice);`}</pre>
 
           <ProBox>
             Si luego quieres filtrarlo por tema, agrega `tag` (ej: &quot;cache&quot;, &quot;seguridad&quot;,

@@ -51,6 +51,12 @@ const statusRows = [
 
 const dailyLessons = [
   {
+    date: "2026-02-19",
+    title: "DTO != Entidad",
+    lesson:
+      "La entidad refleja persistencia interna; el DTO define el contrato externo. Nunca expongas PasswordHash o campos internos.",
+  },
+  {
     date: "2026-02-18",
     title: ".NET Minimal API",
     lesson:
@@ -487,6 +493,38 @@ Content-Type: application/json
     { "field": "items[0].sku", "message": "Unknown SKU" }
   ]
 }`}</pre>
+
+          <h3>DTO != Entidad (.NET en practica)</h3>
+          <p>
+            La entidad puede tener datos sensibles o internos. El DTO de respuesta solo expone lo que el cliente
+            necesita consumir.
+          </p>
+          <pre className={styles.code}>{`// Entidad interna (persistencia)
+public class User
+{
+  public Guid Id { get; set; }
+  public string Email { get; set; } = "";
+  public string PasswordHash { get; set; } = "";
+  public bool IsAdmin { get; set; }
+  public string InternalNotes { get; set; } = "";
+}
+
+// Contrato de salida (API)
+public record UserResponseDto(Guid Id, string Email);
+
+app.MapGet("/api/v1/users/{id:guid}", async (Guid id, AppDbContext db) =>
+{
+  var user = await db.Users.FindAsync(id);
+  if (user is null) return Results.NotFound();
+
+  // Mapping explicito para proteger el modelo interno
+  var dto = new UserResponseDto(user.Id, user.Email);
+  return Results.Ok(dto);
+});`}</pre>
+          <div className={styles.note}>
+            Si mañana cambias `InternalNotes` o `PasswordHash` en base de datos, el contrato externo no se rompe porque
+            el frontend consume el DTO.
+          </div>
 
           <ProBox>
             Problem Details (`application/problem+json`) es una gran base estandar. En equipos grandes, define

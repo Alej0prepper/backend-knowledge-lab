@@ -7,6 +7,7 @@ export default function Page() {
     { day: "Day 5", title: "Idempotencia", href: "/daily/5", status: "Publicado" },
     { day: "Day 6", title: "Leccion pendiente", href: "/daily/6", status: "Draft" },
     { day: "Day 7", title: "Transacciones y consistencia", href: "/daily/7", status: "Publicado" },
+    { day: "Day 8", title: "DTO != Entidad", href: "/daily/8", status: "Publicado" },
   ];
 
   return (

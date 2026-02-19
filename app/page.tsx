@@ -1,14 +1,53 @@
+import fs from "node:fs/promises";
+import path from "node:path";
 import Link from "next/link";
 import styles from "./page.module.css";
 
-export default function Page() {
-  const lessons = [
-    { day: "Day 4", title: "Leccion pendiente", href: "/daily/4", status: "Draft" },
-    { day: "Day 5", title: "Idempotencia", href: "/daily/5", status: "Publicado" },
-    { day: "Day 6", title: "Leccion pendiente", href: "/daily/6", status: "Draft" },
-    { day: "Day 7", title: "Transacciones y consistencia", href: "/daily/7", status: "Publicado" },
-    { day: "Day 8", title: "DTO != Entidad", href: "/daily/8", status: "Publicado" },
-  ];
+type LessonCard = {
+  day: string;
+  title: string;
+  href: string;
+  status: string;
+};
+
+async function getDailyLessons(): Promise<LessonCard[]> {
+  const dailyDir = path.join(process.cwd(), "app", "daily");
+  const entries = await fs.readdir(dailyDir, { withFileTypes: true });
+
+  const dailyFolders = entries.filter((entry) => entry.isDirectory() && /^\d+$/.test(entry.name));
+
+  const validated = await Promise.all(
+    dailyFolders.map(async (entry) => {
+      const routePagePath = path.join(dailyDir, entry.name, "page.tsx");
+      try {
+        await fs.access(routePagePath);
+        const day = Number(entry.name);
+        return {
+          day: `Day ${day}`,
+          title: `Leccion dia ${day}`,
+          href: `/daily/${day}`,
+          status: "Publicado",
+          dayNumber: day,
+        };
+      } catch {
+        return null;
+      }
+    })
+  );
+
+  return validated
+    .filter((item): item is (LessonCard & { dayNumber: number }) => item !== null)
+    .sort((a, b) => b.dayNumber - a.dayNumber)
+    .map((item) => ({
+      day: item.day,
+      title: item.title,
+      href: item.href,
+      status: item.status,
+    }));
+}
+
+export default async function Page() {
+  const lessons = await getDailyLessons();
 
   return (
     <main className={styles.page}>

@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import Image from "next/image";
 import Link from "next/link";
 import styles from "./page.module.css";
 
@@ -55,15 +56,22 @@ export default async function Page() {
         <div className={styles.heroContent}>
           <div>
             <p className={styles.kicker}>Backend Learning Lab</p>
-            <h1>Hero page simple para maquetar el proyecto</h1>
+            <h1>Alejandro Alvarez Lamazares</h1>
             <p className={styles.subtitle}>
-              Esta version replica la direccion visual del proyecto para iterar layout, navegacion y contenido.
+              Soy licenciado en Ciencia de la Computacion y actualmente trabajo como desarrollador backend en lenguaje
+              C#.
             </p>
             <div className={styles.tags}>
+              <span>Licenciado en Ciencia de la Computacion</span>
+              <span>Backend Developer</span>
+              <span>C#</span>
               <span>REST Lite</span>
               <span>Daily Lessons</span>
-              <span>Learning + Craft</span>
+              <span>Knowledge Sharing</span>
             </div>
+            <p className={styles.subtitle}>
+              Esta es una pagina donde puedo plasmar conocimiento para compartir con la comunidad.
+            </p>
             <div className={styles.actions}>
               <Link href="/rest-lite" className={styles.buttonPrimary}>
                 Ver REST Lite
@@ -78,12 +86,16 @@ export default async function Page() {
           </div>
 
           <aside className={styles.heroPreview} aria-label="Placeholder de imagen principal">
-            <p className={styles.previewLabel}>Imagen principal</p>
+            <p className={styles.previewLabel}>Foto principal</p>
             <div className={styles.imagePlaceholder}>
-              <span>Placeholder</span>
-              <small>Aqui ira arte/imagen del proyecto</small>
+              <Image
+                src="/images/hero.png"
+                alt="Foto de perfil"
+                fill
+                priority
+                className={styles.heroPhoto}
+              />
             </div>
-            <p className={styles.previewHint}>Sugerido: 1200x800, enfoque backend + learning.</p>
           </aside>
         </div>
       </section>

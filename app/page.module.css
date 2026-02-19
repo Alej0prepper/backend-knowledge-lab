@@ -163,6 +163,8 @@
   place-content: center;
   text-align: center;
   gap: 6px;
+  position: relative;
+  overflow: hidden;
 }
 
 .imagePlaceholder span {
@@ -178,6 +180,10 @@
   margin: 8px 0 0;
   color: rgba(255, 255, 255, 0.66);
   font-size: 12px;
+}
+
+.heroPhoto {
+  object-fit: cover;
 }
 
 .dailySection {

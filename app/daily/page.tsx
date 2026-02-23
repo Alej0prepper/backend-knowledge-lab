@@ -10,6 +10,29 @@ type LessonCard = {
   status: string;
 };
 
+async function getLessonTitle(routePagePath: string): Promise<string> {
+  try {
+    const source = await fs.readFile(routePagePath, "utf8");
+    const metadataTitleMatch = source.match(/title:\s*["'`](.+?)["'`]/);
+
+    if (!metadataTitleMatch) {
+      return "Leccion diaria";
+    }
+
+    const rawTitle = metadataTitleMatch[1].trim();
+    const normalized = rawTitle
+      .replace(/^Daily\s+Backend\s*-\s*/i, "")
+      .replace(/^D[ií]a\s*\d+\s*/i, "")
+      .replace(/^\((.*)\)$/, "$1")
+      .replace(/^[-:–—]\s*/, "")
+      .trim();
+
+    return normalized.length > 0 ? normalized : "Leccion diaria";
+  } catch {
+    return "Leccion diaria";
+  }
+}
+
 async function getDailyLessons(): Promise<LessonCard[]> {
   const dailyDir = path.join(process.cwd(), "app", "daily");
   const entries = await fs.readdir(dailyDir, { withFileTypes: true });
@@ -22,9 +45,10 @@ async function getDailyLessons(): Promise<LessonCard[]> {
       try {
         await fs.access(routePagePath);
         const day = Number(entry.name);
+        const lessonTitle = await getLessonTitle(routePagePath);
         return {
-          day: `Day ${day}`,
-          title: `Leccion dia ${day}`,
+          day: `Dia ${day}`,
+          title: lessonTitle,
           href: `/daily/${day}`,
           status: "Publicado",
           dayNumber: day,
@@ -69,7 +93,6 @@ export default async function DailyIndexPage() {
             <Link key={lesson.href} href={lesson.href} className={styles.lessonCard}>
               <span className={styles.day}>{lesson.day}</span>
               <h3>{lesson.title}</h3>
-              <span className={styles.status}>{lesson.status}</span>
             </Link>
           ))}
         </div>

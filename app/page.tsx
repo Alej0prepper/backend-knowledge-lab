@@ -11,6 +11,16 @@ type LessonCard = {
   status: string;
 };
 
+function getLessonTitleFromMetadata(rawTitle: string, day: number): string {
+  const fromParentheses = rawTitle.match(/\(([^)]+)\)\s*$/)?.[1]?.trim();
+  if (fromParentheses) return fromParentheses;
+
+  const withoutPrefix = rawTitle.replace(/^Daily Backend\s*-\s*Dia\s*\d+\s*/i, "").replace(/^[-:]\s*/, "").trim();
+  if (withoutPrefix) return withoutPrefix;
+
+  return `Leccion dia ${day}`;
+}
+
 async function getDailyLessons(): Promise<LessonCard[]> {
   const dailyDir = path.join(process.cwd(), "app", "daily");
   const entries = await fs.readdir(dailyDir, { withFileTypes: true });
@@ -23,9 +33,15 @@ async function getDailyLessons(): Promise<LessonCard[]> {
       try {
         await fs.access(routePagePath);
         const day = Number(entry.name);
+        const routePageContent = await fs.readFile(routePagePath, "utf8");
+        const metadataTitleMatch = routePageContent.match(/title:\s*["']([^"']+)["']/);
+        const title = metadataTitleMatch
+          ? getLessonTitleFromMetadata(metadataTitleMatch[1], day)
+          : `Leccion dia ${day}`;
+
         return {
           day: `Day ${day}`,
-          title: `Leccion dia ${day}`,
+          title,
           href: `/daily/${day}`,
           status: "Publicado",
           dayNumber: day,

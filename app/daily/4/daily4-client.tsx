@@ -20,9 +20,6 @@ export default function Daily4Client() {
             <Link className={styles.pill} href="/daily">
               Archivo
             </Link>
-            <Link className={styles.pill} href="/rest">
-              REST ATLAS
-            </Link>
             <Link className={styles.pill} href="/">
               Sobre mi
             </Link>
@@ -30,10 +27,7 @@ export default function Daily4Client() {
 
           <div className={styles.actions}>
             <Link className={styles.btn} href="/daily">
-              <span className={styles.kbd}>←</span> Volver
-            </Link>
-            <Link className={`${styles.btn} ${styles.primary}`} href="/daily/5">
-              Dia 5
+              <span className={styles.kbd}>←</span> Clase anterior
             </Link>
           </div>
         </div>

@@ -89,12 +89,12 @@ export default async function Page() {
               Esta es una pagina donde puedo plasmar conocimiento para compartir con la comunidad.
             </p>
             <div className={styles.actions}>
-              <Link href="/rest-lite" className={styles.buttonPrimary}>
+              {/* <Link href="/rest-lite" className={styles.buttonPrimary}>
                 Ver REST Lite
               </Link>
               <Link href="/rest" className={styles.button}>
                 Ver REST Atlas
-              </Link>
+              </Link> */}
               <Link href="/daily" className={styles.button}>
                 Ver Archivo Daily
               </Link>

@@ -1,41 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect } from "react";
 import styles from "../daily-lesson.module.css";
 
-const tocItems = [
-  { id: "idea", label: "1) Idea" },
-  { id: "ejemplo", label: "2) Ejemplo" },
-  { id: "mentalidad", label: "3) Mentalidad" },
-  { id: "dotnet", label: "4) .NET" },
-  { id: "testing", label: "5) Testing" },
-  { id: "takeaway", label: "Takeaway" },
-] as const;
-
 export default function Daily6Client() {
-  const [activeSection, setActiveSection] = useState<string>("idea");
-
-  useEffect(() => {
-    const sections = tocItems
-      .map((item) => document.getElementById(item.id))
-      .filter((node): node is HTMLElement => Boolean(node));
-
-    if (!sections.length) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActiveSection(entry.target.id);
-        });
-      },
-      { rootMargin: "-45% 0px -50% 0px", threshold: 0.01 }
-    );
-
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
-  }, []);
-
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
@@ -47,12 +16,6 @@ export default function Daily6Client() {
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
-
-  const tocLinkClass = useMemo(
-    () => (id: string) => `${styles.tocLink} ${activeSection === id ? styles.active : ""}`,
-    [activeSection]
-  );
-
   return (
     <div className={styles.page}>
       <header className={styles.topbar}>
@@ -69,9 +32,6 @@ export default function Daily6Client() {
             <Link className={styles.pill} href="/daily">
               Archivo
             </Link>
-            <Link className={styles.pill} href="/rest">
-              REST ATLAS
-            </Link>
             <Link className={styles.pill} href="/">
               Sobre mi
             </Link>
@@ -79,10 +39,7 @@ export default function Daily6Client() {
 
           <div className={styles.actions}>
             <Link className={styles.btn} href="/daily/5">
-              <span className={styles.kbd}>←</span> Dia 5
-            </Link>
-            <Link className={`${styles.btn} ${styles.primary}`} href="/daily/7">
-              Dia 7 <span className={styles.kbd}>N</span>
+              <span className={styles.kbd}>←</span> Clase anterior
             </Link>
           </div>
         </div>
@@ -116,19 +73,8 @@ export default function Daily6Client() {
                   <a className={styles.btn} href="#takeaway">
                     Idea final
                   </a>
-                  <Link className={styles.btn} href="/rest-lite#aprendizaje-diario">
-                    Ver en REST Lite
-                  </Link>
                 </div>
               </div>
-
-              <nav className={styles.toc} aria-label="Indice">
-                {tocItems.map((item) => (
-                  <a key={item.id} href={`#${item.id}`} className={tocLinkClass(item.id)}>
-                    {item.label}
-                  </a>
-                ))}
-              </nav>
 
               <section className={styles.section} id="idea">
                 <div className={styles.shd}>
@@ -249,9 +195,6 @@ export default function Daily6Client() {
                     </Link>
                     <Link className={styles.btn} href="/daily">
                       Ver archivo
-                    </Link>
-                    <Link className={styles.btn} href="/rest-lite">
-                      REST Lite
                     </Link>
                   </div>
                 </div>

@@ -1,17 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect } from "react";
 import styles from "../daily-lesson.module.css";
-
-const tocItems = [
-  { id: "idea", label: "1) Idea" },
-  { id: "ejemplo", label: "2) Ejemplo" },
-  { id: "mentalidad", label: "3) Mentalidad" },
-  { id: "dotnet", label: "4) .NET" },
-  { id: "testing", label: "5) Testing" },
-  { id: "takeaway", label: "Takeaway" },
-] as const;
 
 const lowCohesionSnippet = `public class UserService
 {
@@ -52,28 +43,6 @@ const checklistSnippet = `[ ] Busca servicios con demasiadas responsabilidades m
 [ ] Evalua si cada clase tiene una sola razon de cambio`;
 
 export default function Daily12Client() {
-  const [activeSection, setActiveSection] = useState<string>("idea");
-
-  useEffect(() => {
-    const sections = tocItems
-      .map((item) => document.getElementById(item.id))
-      .filter((node): node is HTMLElement => Boolean(node));
-
-    if (!sections.length) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActiveSection(entry.target.id);
-        });
-      },
-      { rootMargin: "-45% 0px -50% 0px", threshold: 0.01 }
-    );
-
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
-  }, []);
-
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
@@ -84,12 +53,6 @@ export default function Daily12Client() {
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
-
-  const tocLinkClass = useMemo(
-    () => (id: string) => `${styles.tocLink} ${activeSection === id ? styles.active : ""}`,
-    [activeSection]
-  );
-
   return (
     <div className={styles.page}>
       <header className={styles.topbar}>
@@ -106,9 +69,6 @@ export default function Daily12Client() {
             <Link className={styles.pill} href="/daily">
               Archivo
             </Link>
-            <Link className={styles.pill} href="/rest-lite">
-              REST Lite
-            </Link>
             <Link className={styles.pill} href="/">
               Sobre mi
             </Link>
@@ -116,10 +76,7 @@ export default function Daily12Client() {
 
           <div className={styles.actions}>
             <Link className={styles.btn} href="/daily/11">
-              <span className={styles.kbd}>←</span> Dia 11
-            </Link>
-            <Link className={`${styles.btn} ${styles.primary}`} href="#idea">
-              Empezar
+              <span className={styles.kbd}>←</span> Clase anterior
             </Link>
           </div>
         </div>
@@ -146,14 +103,6 @@ export default function Daily12Client() {
                   una unica responsabilidad clara.
                 </p>
               </div>
-
-              <nav className={styles.toc} aria-label="Indice">
-                {tocItems.map((item) => (
-                  <a key={item.id} href={`#${item.id}`} className={tocLinkClass(item.id)}>
-                    {item.label}
-                  </a>
-                ))}
-              </nav>
 
               <section className={styles.section} id="idea">
                 <div className={styles.shd}>
@@ -264,14 +213,8 @@ export default function Daily12Client() {
                   </div>
 
                   <div className={styles.footerNav}>
-                    <Link className={styles.btn} href="/daily/11">
-                      ← Dia 11
-                    </Link>
                     <Link className={styles.btn} href="/daily">
                       Ver archivo
-                    </Link>
-                    <Link className={`${styles.btn} ${styles.primary}`} href="/rest-lite#aprendizaje-diario">
-                      REST Lite
                     </Link>
                   </div>
                 </div>

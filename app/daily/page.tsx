@@ -74,9 +74,7 @@ export default async function DailyIndexPage() {
             <Link href="/" className={styles.buttonPrimary}>
               Volver al Home
             </Link>
-            <Link href="/rest-lite" className={styles.button}>
-              Ver REST Lite
-            </Link>
+          
           </div>
         </div>
 

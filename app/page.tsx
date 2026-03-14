@@ -8,7 +8,6 @@ type LessonCard = {
   day: string;
   title: string;
   href: string;
-  status: string;
 };
 
 function getLessonTitleFromMetadata(rawTitle: string, day: number): string {
@@ -43,7 +42,6 @@ async function getDailyLessons(): Promise<LessonCard[]> {
           day: `Day ${day}`,
           title,
           href: `/daily/${day}`,
-          status: "Publicado",
           dayNumber: day,
         };
       } catch {
@@ -59,7 +57,6 @@ async function getDailyLessons(): Promise<LessonCard[]> {
       day: item.day,
       title: item.title,
       href: item.href,
-      status: item.status,
     }));
 }
 
@@ -89,6 +86,9 @@ export default async function Page() {
               Esta es una pagina donde puedo plasmar conocimiento para compartir con la comunidad.
             </p>
             <div className={styles.actions}>
+              <Link href="/concepts" className={styles.buttonPrimary}>
+                Concepts
+              </Link>
               {/* <Link href="/rest-lite" className={styles.buttonPrimary}>
                 Ver REST Lite
               </Link>
@@ -127,7 +127,6 @@ export default async function Page() {
             <Link key={lesson.href} href={lesson.href} className={styles.lessonCard}>
               <span className={styles.day}>{lesson.day}</span>
               <h3>{lesson.title}</h3>
-              <span className={styles.status}>{lesson.status}</span>
             </Link>
           ))}
         </div>

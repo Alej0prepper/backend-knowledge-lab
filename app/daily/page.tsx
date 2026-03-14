@@ -7,7 +7,6 @@ type LessonCard = {
   day: string;
   title: string;
   href: string;
-  status: string;
 };
 
 function getLessonTitleFromMetadata(rawTitle: string, day: number): string {
@@ -42,7 +41,6 @@ async function getDailyLessons(): Promise<LessonCard[]> {
           day: `Day ${day}`,
           title,
           href: `/daily/${day}`,
-          status: "Publicado",
           dayNumber: day,
         };
       } catch {
@@ -58,7 +56,6 @@ async function getDailyLessons(): Promise<LessonCard[]> {
       day: item.day,
       title: item.title,
       href: item.href,
-      status: item.status,
     }));
 }
 
@@ -83,7 +80,6 @@ export default async function DailyIndexPage() {
             <Link key={lesson.href} href={lesson.href} className={styles.lessonCard}>
               <span className={styles.day}>{lesson.day}</span>
               <h3>{lesson.title}</h3>
-              <span className={styles.status}>{lesson.status}</span>
             </Link>
           ))}
         </div>

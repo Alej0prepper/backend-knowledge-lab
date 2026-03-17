@@ -1,0 +1,60 @@
+.article {
+  margin-top: 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.08);
+  padding: clamp(0.95rem, 2vw, 1.25rem);
+}
+
+.article section {
+  margin-top: 1.7rem;
+}
+
+.article h2 {
+  margin: 0 0 0.55rem;
+  font-size: clamp(1.22rem, 2.1vw, 1.55rem);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.article h3 {
+  margin: 0.95rem 0 0.45rem;
+  font-size: 1.02rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.article p {
+  margin: 0.45rem 0;
+  line-height: 1.62;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.article ul {
+  margin: 0.6rem 0;
+  padding-left: 1.2rem;
+}
+
+.article li {
+  margin: 0.32rem 0;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.article pre {
+  margin: 0.62rem 0;
+  padding: 0.78rem 0.88rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(7, 12, 27, 0.86);
+  color: rgba(255, 255, 255, 0.88);
+  overflow-x: auto;
+  font-size: 0.87rem;
+  line-height: 1.45;
+}
+
+.article blockquote {
+  margin: 0.68rem 0;
+  padding: 0.62rem 0.78rem;
+  border-left: 4px solid rgba(251, 208, 0, 0.72);
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.92);
+  border-radius: 8px;
+}

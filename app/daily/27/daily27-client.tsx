@@ -1,52 +1,36 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect } from "react";
 import styles from "../daily-lesson.module.css";
 
-const tocItems = [
-  { id: "idea", label: "1) Idea" },
-  { id: "ejemplo", label: "2) Ejemplo" },
-  { id: "mentalidad", label: "3) Mentalidad" },
-  { id: "dotnet", label: "4) .NET" },
-  { id: "testing", label: "5) Testing" },
-  { id: "takeaway", label: "Takeaway" },
-] as const;
+const orderingSnippet = `// Ordenamiento estable antes de paginar
+var page = 1;
+var pageSize = 20;
 
-const mainSnippet = `// TODO: snippet principal`;
-const secondarySnippet = `// TODO: snippet secundario`;
-const checklistSnippet = `[ ] Caso 1
-[ ] Caso 2
-[ ] Caso 3
-[ ] Caso 4`;
+var orders = await _db.Orders
+  .OrderByDescending(o => o.CreatedAt)
+  .ThenBy(o => o.Id)
+  .Skip((page - 1) * pageSize)
+  .Take(pageSize)
+  .ToListAsync(ct);`;
 
-export default function DailyTemplateClient() {
-  const [activeSection, setActiveSection] = useState<string>("idea");
+const checklistSnippet = `[ ] Verificar orden por defecto en cada endpoint de lista
+[ ] Confirmar orden estable entre paginas
+[ ] Detectar elementos repetidos o faltantes al paginar
+[ ] Validar criterio de orden segun necesidad de negocio`;
 
+export default function Daily27Client() {
   useEffect(() => {
-    const sections = tocItems
-      .map((item) => document.getElementById(item.id))
-      .filter((node): node is HTMLElement => Boolean(node));
+    const onKeyDown = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) return;
+      if (event.key.toLowerCase() === "p") window.location.href = "/daily/26";
+    };
 
-    if (!sections.length) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActiveSection(entry.target.id);
-        });
-      },
-      { rootMargin: "-45% 0px -50% 0px", threshold: 0.01 }
-    );
-
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
-
-  const tocLinkClass = useMemo(
-    () => (id: string) => `${styles.tocLink} ${activeSection === id ? styles.active : ""}`,
-    [activeSection]
-  );
 
   return (
     <div className={styles.page}>
@@ -64,17 +48,15 @@ export default function DailyTemplateClient() {
             <Link className={styles.pill} href="/daily">
               Archivo
             </Link>
-            
             <Link className={styles.pill} href="/">
               Sobre mi
             </Link>
           </nav>
 
           <div className={styles.actions}>
-            <Link className={styles.btn} href="/daily/previous">
-              <span className={styles.kbd}>←</span> Clase anterior 
+            <Link className={styles.btn} href="/daily/26">
+              <span className={styles.kbd}>←</span> Clase anterior
             </Link>
-            
           </div>
         </div>
       </header>
@@ -84,44 +66,57 @@ export default function DailyTemplateClient() {
           <article className={styles.card}>
             <div className={styles.bd}>
               <div className={styles.dailyHero}>
-                <div className={styles.createdAt}>DD/MM/AAAA</div>
-                <div className={styles.badge}>Daily #XX • Backend Foundations</div>
-                <h2 className={styles.title}>TITULO DE LA LECCION</h2>
+                <div className={styles.createdAt}>18/03/2026</div>
+                <div className={styles.badge}>Daily #27 • Backend Foundations</div>
+                <h2 className={styles.title}>Ordenamiento: el orden tambien es parte del backend</h2>
 
-               
+                <div className={styles.meta} aria-label="Metadata">
+                  <span className={`${styles.chip} ${styles.chipOk}`}>3-6 min</span>
+                  <span className={styles.chip}>Nivel: Principiante</span>
+                  <span className={`${styles.chip} ${styles.chipPro}`}>Tag: API Design</span>
+                  <span className={styles.chip}>Tag: Consistency</span>
+                  <span className={styles.chip}>Tag: .NET</span>
+                </div>
 
-                <p className={styles.lead}>Mensaje principal en 1 frase clara.</p>
+                <p className={styles.lead}>
+                  El orden de una lista no es decorativo: afecta usabilidad, consistencia y estabilidad de paginacion.
+                </p>
               </div>
-
-              
 
               <section className={styles.section} id="idea">
                 <div className={styles.shd}>
                   <div>
                     <h3>1. La idea clave</h3>
-                    <p className={styles.sub}>Concepto central en lenguaje simple.</p>
+                    <p className={styles.sub}>Cuando devuelves listas, debes definir un orden explicito.</p>
                   </div>
                   <span className={styles.chip}>Concepto</span>
                 </div>
                 <div className={styles.sbd}>
-                  <div className={styles.callout}>Frase de impacto del tema.</div>
+                  <div className={styles.callout}>
+                    Un backend profesional define como y por que se ordenan los datos. Esto es parte del contrato del
+                    endpoint.
+                  </div>
                 </div>
               </section>
 
               <section className={styles.section} id="ejemplo">
                 <div className={styles.shd}>
                   <div>
-                    <h3>2. Ejemplo</h3>
-                    <p className={styles.sub}>Escenario real donde se ve el problema y la solucion.</p>
+                    <h3>2. Ejemplo simple</h3>
+                    <p className={styles.sub}>Lista de pedidos: reciente, antiguo, por precio o por estado.</p>
                   </div>
                   <span className={styles.chip}>Escenario</span>
                 </div>
                 <div className={styles.sbd}>
                   <ul className={styles.bullets}>
-                    <li>Punto clave 1.</li>
-                    <li>Punto clave 2.</li>
+                    <li>Sin orden definido, requests iguales pueden devolver resultados distintos.</li>
+                    <li>Sin orden estable, la paginacion repite o pierde elementos.</li>
+                    <li>Con orden claro, la experiencia es consistente.</li>
                   </ul>
-                  <pre>{mainSnippet}</pre>
+
+                  <div className={styles.quote}>
+                    Si no defines el orden, la base de datos puede devolver filas en secuencias no predecibles.
+                  </div>
                 </div>
               </section>
 
@@ -129,15 +124,15 @@ export default function DailyTemplateClient() {
                 <div className={styles.shd}>
                   <div>
                     <h3>3. Como piensa un backend developer</h3>
-                    <p className={styles.sub}>Preguntas de criterio para tomar decisiones.</p>
+                    <p className={styles.sub}>No deja el orden al azar: lo define segun el caso de uso.</p>
                   </div>
                   <span className={styles.chip}>Mentalidad</span>
                 </div>
                 <div className={styles.sbd}>
                   <ul className={styles.bullets}>
-                    <li>Pregunta 1?</li>
-                    <li>Pregunta 2?</li>
-                    <li>Pregunta 3?</li>
+                    <li>Cual es el orden logico para este endpoint?</li>
+                    <li>El cliente necesita elegir distintos tipos de orden?</li>
+                    <li>El orden se mantiene estable entre paginas?</li>
                   </ul>
                 </div>
               </section>
@@ -146,17 +141,18 @@ export default function DailyTemplateClient() {
                 <div className={styles.shd}>
                   <div>
                     <h3>4. Como se ve en .NET</h3>
-                    <p className={styles.sub}>Implementacion concreta aplicable.</p>
+                    <p className={styles.sub}>En Entity Framework se usa OrderBy u OrderByDescending.</p>
                   </div>
                   <span className={styles.chip}>Implementacion</span>
                 </div>
                 <div className={styles.sbd}>
                   <ul className={styles.bullets}>
-                    <li>Practica 1.</li>
-                    <li>Practica 2.</li>
-                    <li>Practica 3.</li>
+                    <li>Usar `OrderBy()` o `OrderByDescending()` con criterio claro.</li>
+                    <li>Agregar `ThenBy()` para estabilidad cuando hay empates.</li>
+                    <li>Ordenar siempre antes de `Skip()` y `Take()`.</li>
                   </ul>
-                  <pre>{secondarySnippet}</pre>
+
+                  <pre>{orderingSnippet}</pre>
                 </div>
               </section>
 
@@ -164,16 +160,17 @@ export default function DailyTemplateClient() {
                 <div className={styles.shd}>
                   <div>
                     <h3>5. Como lo detectas como tester</h3>
-                    <p className={styles.sub}>Pruebas clave para descubrir riesgos reales.</p>
+                    <p className={styles.sub}>Los problemas aparecen como listas inconsistentes o aparentemente random.</p>
                   </div>
                   <span className={styles.chip}>Testing</span>
                 </div>
                 <div className={styles.sbd}>
                   <ul className={styles.bullets}>
-                    <li>Riesgo 1.</li>
-                    <li>Riesgo 2.</li>
-                    <li>Riesgo 3.</li>
+                    <li>Resultados que cambian entre requests iguales.</li>
+                    <li>Paginacion con elementos repetidos o faltantes.</li>
+                    <li>Orden no alineado con la logica del producto.</li>
                   </ul>
+
                   <pre>{checklistSnippet}</pre>
                 </div>
               </section>
@@ -182,12 +179,14 @@ export default function DailyTemplateClient() {
                 <div className={styles.shd}>
                   <div>
                     <h3>Idea que te llevas hoy</h3>
-                    <p className={styles.sub}>Cierre en una frase accionable.</p>
+                    <p className={styles.sub}>El orden tambien es una decision de arquitectura y contrato de API.</p>
                   </div>
                   <span className={`${styles.chip} ${styles.chipOk}`}>Cierre</span>
                 </div>
                 <div className={styles.sbd}>
-                  <div className={styles.quote}>Frase final memorable.</div>
+                  <div className={styles.quote}>
+                    Si no defines el orden, el sistema lo hara por ti y probablemente mal.
+                  </div>
 
                   <div className={styles.footerNav}>
                     <Link className={styles.btn} href="/daily">
@@ -204,18 +203,18 @@ export default function DailyTemplateClient() {
               <div className={styles.hd}>
                 <div>
                   <h2>Resumen rapido</h2>
-                  <p>Template en una vista.</p>
+                  <p>Dia 27 en una vista.</p>
                 </div>
               </div>
               <div className={styles.bd}>
                 <div className={styles.li}>
-                  <strong>Idea clave:</strong> resumen del concepto.
+                  <strong>Idea clave:</strong> el orden de listas es parte del contrato de backend.
                 </div>
                 <div className={styles.li}>
-                  <strong>.NET:</strong> practica aplicada.
+                  <strong>.NET:</strong> OrderBy/OrderByDescending antes de paginar.
                 </div>
                 <div className={styles.li}>
-                  <strong>Riesgo:</strong> error tipico a evitar.
+                  <strong>Riesgo:</strong> sin orden estable, la paginacion se rompe.
                 </div>
               </div>
             </div>

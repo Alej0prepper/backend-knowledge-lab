@@ -122,7 +122,7 @@ namespace MiApi.Controllers
             <h3>Que pasa aqui</h3>
             <ul>
               <li>`UsersController` recibe requests de usuarios</li>
-              <li>`[HttpGet(&quot;{id}&quot;)]` responde a `GET /api/users/{id}`</li>
+              <li>`[HttpGet(&quot;&#123;id&#125;&quot;)]` responde a `GET /api/users/&#123;id&#125;`</li>
               <li>El metodo recibe `id`</li>
               <li>Devuelve respuesta con `Ok(...)`</li>
             </ul>
@@ -150,7 +150,7 @@ def get_user(user_id: int):
 
             <h3>Que pasa aqui</h3>
             <ul>
-              <li>La ruta recibe `GET /users/{user_id}`</li>
+              <li>La ruta recibe `GET /users/&#123;user_id&#125;`</li>
               <li>La funcion recibe el parametro</li>
               <li>Devuelve la respuesta al cliente</li>
             </ul>

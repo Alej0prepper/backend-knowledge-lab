@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import Link from "next/link";
+import AtlasSearchClient from "./atlas-search-client";
 import styles from "../page.module.css";
 
 type ConceptCard = {
@@ -65,13 +66,7 @@ export default async function ConceptsIndexPage() {
           </div>
         </div>
 
-        <div className={styles.dailyGrid}>
-          {concepts.map((concept) => (
-            <Link key={concept.href} href={concept.href} className={styles.lessonCard}>
-              <h3>{concept.title}</h3>
-            </Link>
-          ))}
-        </div>
+        <AtlasSearchClient concepts={concepts} />
       </section>
     </main>
   );

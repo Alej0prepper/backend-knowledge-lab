@@ -16,7 +16,7 @@ function getConceptTitleFromMetadata(rawTitle: string, fallbackName: string): st
 }
 
 async function getConcepts(): Promise<ConceptCard[]> {
-  const conceptsDir = path.join(process.cwd(), "app", "concepts");
+  const conceptsDir = path.join(process.cwd(), "app", "atlas");
   const entries = await fs.readdir(conceptsDir, { withFileTypes: true });
   const conceptFolders = entries.filter((entry) => entry.isDirectory());
 
@@ -34,7 +34,7 @@ async function getConcepts(): Promise<ConceptCard[]> {
         return {
           name: entry.name,
           title,
-          href: `/concepts/${entry.name}`,
+          href: `/atlas/${entry.name}`,
         };
       } catch {
         return null;
@@ -54,7 +54,7 @@ export default async function ConceptsIndexPage() {
     <main className={styles.page}>
       <section className={styles.dailySection}>
         <div className={styles.dailyHeader}>
-          <h2>Concepts</h2>
+          <h2>Atlas</h2>
           <div className={styles.actions}>
             <Link href="/" className={styles.buttonPrimary}>
               Volver al Home

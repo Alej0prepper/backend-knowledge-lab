@@ -86,8 +86,8 @@ export default async function Page() {
               Esta es una pagina donde puedo plasmar conocimiento para compartir con la comunidad.
             </p>
             <div className={styles.actions}>
-              <Link href="/concepts" className={styles.buttonPrimary}>
-                Concepts
+              <Link href="/atlas" className={styles.buttonPrimary}>
+                Atlas
               </Link>
               {/* <Link href="/rest-lite" className={styles.buttonPrimary}>
                 Ver REST Lite

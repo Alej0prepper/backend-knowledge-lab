@@ -163,11 +163,11 @@ class Product:
               Un model es una representacion estructurada de los datos de una entidad dentro del sistema.
             </blockquote>
             <p>Sirve para definir como luce esa informacion y como se maneja dentro de la aplicacion.</p>
-            <pre>{`/concepts/model`}</pre>
-            <pre>{`/concepts/middleware
-/concepts/dto
-/concepts/controller
-/concepts/model`}</pre>
+            <pre>{`/atlas/model`}</pre>
+            <pre>{`/atlas/middleware
+/atlas/dto
+/atlas/controller
+/atlas/model`}</pre>
             <pre>{`Controller -> DTO -> Service -> Model`}</pre>
           </section>
         </article>

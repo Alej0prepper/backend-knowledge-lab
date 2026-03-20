@@ -235,7 +235,7 @@ def get_user(user_id: int):
               entidades internas del backend.
             </blockquote>
             <p>Sirve para controlar mejor la informacion que entra y sale de tu aplicacion.</p>
-            <pre>{`/concepts/dto`}</pre>
+            <pre>{`/atlas/dto`}</pre>
           </section>
         </article>
       </section>

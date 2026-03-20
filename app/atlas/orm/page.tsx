@@ -20,8 +20,8 @@ export default function OrmConceptPage() {
             <Link href="/" className={shell.buttonPrimary}>
               Volver al Home
             </Link>
-            <Link href="/concepts" className={shell.button}>
-              Ver Concepts
+            <Link href="/atlas" className={shell.button}>
+              Ver Atlas
             </Link>
           </div>
         </header>
@@ -188,7 +188,7 @@ session.commit()`}</pre>
               Te permite trabajar con entidades y relaciones sin escribir siempre SQL manual, manteniendo control sobre
               el rendimiento.
             </p>
-            <pre>{`/concepts/orm`}</pre>
+            <pre>{`/atlas/orm`}</pre>
           </section>
         </article>
       </section>

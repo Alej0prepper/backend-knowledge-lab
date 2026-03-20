@@ -190,7 +190,7 @@ def get_user(user_id: int):
               Su funcion principal no es contener toda la logica del sistema, sino actuar como punto de entrada y
               coordinacion.
             </p>
-            <pre>{`/concepts/controller`}</pre>
+            <pre>{`/atlas/controller`}</pre>
           </section>
         </article>
       </section>

@@ -1,6 +1,6 @@
 Cosas que se me van ocurriendo y quiero dejarlas aqui para que no se olviden
 
-.concepto de jwt
+.migrations que son, como se usan, que hacen exactamente
 .internacionalizacion
 .terminar proyecto API 
     . Preparar resumen de proyecto API 

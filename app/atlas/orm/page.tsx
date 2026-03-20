@@ -13,7 +13,7 @@ export default function OrmConceptPage() {
     <main className={shell.page}>
       <section className={shell.dailySection}>
         <header className={shell.dailyHeader}>
-          <h2>Conceptos: ORM</h2>
+          <h2>ORM</h2>
           <p>Object-Relational Mapper para trabajar con base de datos usando objetos.</p>
 
           <div className={shell.actions}>

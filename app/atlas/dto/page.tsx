@@ -13,7 +13,7 @@ export default function DtoConceptPage() {
     <main className={shell.page}>
       <section className={shell.dailySection}>
         <header className={shell.dailyHeader}>
-          <h2>Conceptos: DTO</h2>
+          <h2>DTO</h2>
           <p>Data Transfer Object en backend con ejemplos practicos en .NET y Python.</p>
 
           <div className={shell.actions}>

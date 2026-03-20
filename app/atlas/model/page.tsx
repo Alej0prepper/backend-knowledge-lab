@@ -13,7 +13,7 @@ export default function ModelConceptPage() {
     <main className={shell.page}>
       <section className={shell.dailySection}>
         <header className={shell.dailyHeader}>
-          <h2>Conceptos: Model</h2>
+          <h2>Model</h2>
           <p>Representacion estructurada de entidades y datos del sistema.</p>
 
           <div className={shell.actions}>

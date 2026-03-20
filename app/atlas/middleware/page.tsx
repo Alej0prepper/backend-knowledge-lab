@@ -14,7 +14,7 @@ export default function MiddlewareConceptPage() {
     <main className={shell.page}>
       <section className={shell.dailySection}>
         <header className={shell.dailyHeader}>
-          <h2>Conceptos: Middleware</h2>
+          <h2>Middleware</h2>
           <p>Capa intermedia del pipeline HTTP para logica transversal en backend.</p>
 
           <div className={shell.actions}>

@@ -13,7 +13,7 @@ export default function SwaggerConceptPage() {
     <main className={shell.page}>
       <section className={shell.dailySection}>
         <header className={shell.dailyHeader}>
-          <h2>Conceptos: Swagger</h2>
+          <h2>Swagger</h2>
           <p>Documentacion interactiva para entender y probar APIs.</p>
 
           <div className={shell.actions}>

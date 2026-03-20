@@ -13,7 +13,7 @@ export default function ControllerConceptPage() {
     <main className={shell.page}>
       <section className={shell.dailySection}>
         <header className={shell.dailyHeader}>
-          <h2>Conceptos: Controller</h2>
+          <h2>Controller</h2>
           <p>Punto de entrada HTTP que recibe, delega y responde.</p>
 
           <div className={shell.actions}>

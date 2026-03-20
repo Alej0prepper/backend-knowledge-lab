@@ -20,8 +20,8 @@ export default function ModelConceptPage() {
             <Link href="/" className={shell.buttonPrimary}>
               Volver al Home
             </Link>
-            <Link href="/daily" className={shell.button}>
-              Ver Daily
+            <Link href="/atlas" className={shell.button}>
+              Volver al Atlas
             </Link>
           </div>
         </header>

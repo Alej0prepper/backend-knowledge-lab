@@ -4,6 +4,7 @@ Cosas que se me van ocurriendo y quiero dejarlas aqui para que no se olviden
 .internacionalizacion
 .terminar proyecto API 
     . Preparar resumen de proyecto API 
+. Proyecto middleware que proteja servidores de ataques ddos
 .modificar vista de las clases que es deficiente
 .disennar nueva vista del home 
 .

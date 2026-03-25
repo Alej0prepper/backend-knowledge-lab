@@ -19,9 +19,9 @@ export const metadata: Metadata = {
   },
   description: "Backend Learning Lab de Alejandro Alvarez Lamazares.",
   icons: {
-    icon: [{ url: "/images/hero.png", type: "image/png" }],
-    shortcut: [{ url: "/images/hero.png", type: "image/png" }],
-    apple: [{ url: "/images/hero.png", type: "image/png" }],
+    icon: [{ url: "/icon.png", type: "image/png" }],
+    shortcut: [{ url: "/icon.png", type: "image/png" }],
+    apple: [{ url: "/apple-icon.png", type: "image/png" }],
   },
 };
 

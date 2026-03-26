@@ -11,6 +11,7 @@ const tocItems = [
   { id: "dotnet", label: "4) .NET" },
   { id: "testing", label: "5) Testing" },
   { id: "takeaway", label: "Takeaway" },
+  { id: "mini-project", label: "Mini-proyecto" },
 ] as const;
 
 const mainSnippet = `// TODO: snippet principal`;
@@ -19,6 +20,13 @@ const checklistSnippet = `[ ] Caso 1
 [ ] Caso 2
 [ ] Caso 3
 [ ] Caso 4`;
+const miniProjectSnippet = `// TODO: mini proyecto
+if key in processedKeys:
+  return processedKeys[key]
+
+result = do_operation()
+processedKeys[key] = result
+return result`;
 
 export default function DailyTemplateClient() {
   const [activeSection, setActiveSection] = useState<string>("idea");
@@ -194,6 +202,25 @@ export default function DailyTemplateClient() {
                       Ver archivo
                     </Link>
                   </div>
+                </div>
+              </section>
+
+              <section className={styles.section} id="mini-project">
+                <div className={styles.shd}>
+                  <div>
+                    <h3>Mini-proyecto (5-15 min)</h3>
+                    <p className={styles.sub}>Ejercicio opcional para aplicar el concepto del dia.</p>
+                  </div>
+                  <span className={styles.chip}>Practica</span>
+                </div>
+                <div className={styles.sbd}>
+                  <ul className={styles.bullets}>
+                    <li>Objetivo: validar la idea en un caso pequeno.</li>
+                    <li>Paso 1: simular estructura minima.</li>
+                    <li>Paso 2: aplicar logica principal.</li>
+                    <li>Paso 3: ejecutar prueba rapida y verificar resultado.</li>
+                  </ul>
+                  <pre>{miniProjectSnippet}</pre>
                 </div>
               </section>
             </div>

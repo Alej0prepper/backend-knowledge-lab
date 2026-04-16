@@ -68,7 +68,7 @@ export default async function Page() {
       <section className={styles.hero}>
         <div className={styles.heroContent}>
           <div>
-            <p className={styles.kicker}>Backend Learning Lab</p>
+            
             <h1>Alejandro Alvarez Lamazares</h1>
             <p className={styles.subtitle}>
               Soy licenciado en Ciencia de la Computacion y actualmente trabajo como desarrollador backend en lenguaje
@@ -102,7 +102,7 @@ export default async function Page() {
           </div>
 
           <aside className={styles.heroPreview} aria-label="Placeholder de imagen principal">
-            <p className={styles.previewLabel}>Foto principal</p>
+            
             <div className={styles.imagePlaceholder}>
               <Image
                 src="/images/hero.png"

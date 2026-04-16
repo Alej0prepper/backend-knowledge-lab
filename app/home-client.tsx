@@ -83,7 +83,7 @@ export default function HomeClient({ lessons }: HomeClientProps) {
   return (
     <main className={styles.page}>
       <section className={styles.hero}>
-        <p className={styles.kicker}>Backend Learning Lab</p>
+        
 
         <div className={styles.heroContent}>
           <div>

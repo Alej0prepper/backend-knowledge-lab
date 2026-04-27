@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 export type SiteLanguage = "en" | "es";
 
@@ -12,24 +12,16 @@ function readStoredLanguage(): SiteLanguage {
   return saved === "es" ? "es" : "en";
 }
 
+function subscribeToLanguageChange(callback: () => void) {
+  window.addEventListener("site-language-change", callback);
+  window.addEventListener("storage", callback);
+
+  return () => {
+    window.removeEventListener("site-language-change", callback);
+    window.removeEventListener("storage", callback);
+  };
+}
+
 export function useSiteLanguage(defaultLanguage: SiteLanguage = "en"): SiteLanguage {
-  const [language, setLanguage] = useState<SiteLanguage>(defaultLanguage);
-
-  useEffect(() => {
-    setLanguage(readStoredLanguage());
-
-    const onLanguageChange = () => {
-      setLanguage(readStoredLanguage());
-    };
-
-    window.addEventListener("site-language-change", onLanguageChange as EventListener);
-    window.addEventListener("storage", onLanguageChange);
-
-    return () => {
-      window.removeEventListener("site-language-change", onLanguageChange as EventListener);
-      window.removeEventListener("storage", onLanguageChange);
-    };
-  }, []);
-
-  return language;
+  return useSyncExternalStore(subscribeToLanguageChange, readStoredLanguage, () => defaultLanguage);
 }

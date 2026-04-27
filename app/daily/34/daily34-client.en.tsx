@@ -96,7 +96,7 @@ export default function Daily34Client() {
                 </div>
                 <div className={styles.sbd}>
                   <div className={styles.callout}>
-                    Background job = a task in the background outside the endpoint's synchronous flow.
+                    Background job = a task in the background outside the endpoint&apos;s synchronous flow.
                   </div>
                 </div>
               </section>
@@ -182,7 +182,7 @@ export default function Daily34Client() {
               <section className={styles.section} id="takeaway">
                 <div className={styles.shd}>
                   <div>
-                    <h3>Today's takeaway</h3>
+                    <h3>Today&apos;s takeaway</h3>
                     <p className={styles.sub}>A professional backend separates urgent from important.</p>
                   </div>
                   <span className={`${styles.chip} ${styles.chipOk}`}>Closing</span>

@@ -184,7 +184,7 @@ export default function Daily32Client() {
               <section className={styles.section} id="takeaway">
                 <div className={styles.shd}>
                   <div>
-                    <h3>Today's takeaway</h3>
+                    <h3>Today&apos;s takeaway</h3>
                     <p className={styles.sub}>Concurrency is not eliminated; it is managed with strategy.</p>
                   </div>
                   <span className={`${styles.chip} ${styles.chipOk}`}>Closing</span>

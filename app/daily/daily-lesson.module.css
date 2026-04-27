@@ -179,10 +179,14 @@
 
 .grid {
   display: grid;
-  grid-template-columns: 1.6fr 0.9fr;
+  grid-template-columns: 1fr;
   gap: 16px;
   margin-top: 16px;
   align-items: start;
+}
+
+.grid > .card {
+  order: 2;
 }
 
 .card {
@@ -493,11 +497,24 @@
 }
 
 .sidebar {
-  position: sticky;
-  top: 86px;
-  display: flex;
-  flex-direction: column;
+  order: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 12px;
+}
+
+.sidebar .card {
+  height: 100%;
+}
+
+.sidebar .bd {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 8px;
+}
+
+.sidebar .li {
+  margin-top: 0;
 }
 
 .mini {
@@ -553,16 +570,6 @@
   flex-wrap: wrap;
   padding-top: 12px;
   border-top: 1px solid var(--stroke);
-}
-
-@media (max-width: 980px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
-
-  .sidebar {
-    position: static;
-  }
 }
 
 .btn,

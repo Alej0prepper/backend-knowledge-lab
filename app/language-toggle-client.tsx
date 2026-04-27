@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
 
 type Language = "en" | "es";
@@ -398,14 +398,29 @@ function processTree(root: Node, language: Language) {
 }
 
 function readStoredLanguage(): Language {
+  if (typeof window === "undefined") return "en";
   const saved = window.localStorage.getItem(STORAGE_KEY);
   return saved === "es" ? "es" : "en";
 }
 
-function writeLanguage(language: Language) {
-  window.localStorage.setItem(STORAGE_KEY, language);
+function subscribeToLanguageChange(callback: () => void) {
+  window.addEventListener("site-language-change", callback);
+  window.addEventListener("storage", callback);
+
+  return () => {
+    window.removeEventListener("site-language-change", callback);
+    window.removeEventListener("storage", callback);
+  };
+}
+
+function applyLanguageToDocument(language: Language) {
   document.documentElement.lang = language;
   document.documentElement.dataset.language = language;
+}
+
+function writeLanguage(language: Language) {
+  window.localStorage.setItem(STORAGE_KEY, language);
+  applyLanguageToDocument(language);
   window.dispatchEvent(
     new CustomEvent("site-language-change", {
       detail: { language },
@@ -415,16 +430,14 @@ function writeLanguage(language: Language) {
 
 export default function LanguageToggleClient() {
   const pathname = usePathname();
-  const [language, setLanguage] = useState<Language>("en");
+  const language = useSyncExternalStore<Language>(subscribeToLanguageChange, readStoredLanguage, () => "en");
   const languageRef = useRef<Language>("en");
 
   useEffect(() => {
-    const initialLanguage = readStoredLanguage();
-    setLanguage(initialLanguage);
-    languageRef.current = initialLanguage;
-    writeLanguage(initialLanguage);
-    processTree(document.body, initialLanguage);
-  }, []);
+    languageRef.current = language;
+    applyLanguageToDocument(language);
+    processTree(document.body, language);
+  }, [language]);
 
   useEffect(() => {
     if (!pathname) return;
@@ -457,7 +470,6 @@ export default function LanguageToggleClient() {
 
   function switchLanguage(nextLanguage: Language) {
     languageRef.current = nextLanguage;
-    setLanguage(nextLanguage);
     writeLanguage(nextLanguage);
     processTree(document.body, nextLanguage);
   }

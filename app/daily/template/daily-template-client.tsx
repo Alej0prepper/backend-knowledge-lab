@@ -101,7 +101,13 @@ export default function DailyTemplateClient() {
                 <p className={styles.lead}>Mensaje principal en 1 frase clara.</p>
               </div>
 
-              
+              <nav className={styles.toc} aria-label="Indice">
+                {tocItems.map((item) => (
+                  <a key={item.id} href={`#${item.id}`} className={tocLinkClass(item.id)}>
+                    {item.label}
+                  </a>
+                ))}
+              </nav>
 
               <section className={styles.section} id="idea">
                 <div className={styles.shd}>

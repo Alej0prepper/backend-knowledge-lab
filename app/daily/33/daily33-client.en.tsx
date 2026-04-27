@@ -174,7 +174,7 @@ Idempotency-Key: abc123`}</pre>
               <section className={styles.section} id="takeaway">
                 <div className={styles.shd}>
                   <div>
-                    <h3>Today's takeaway</h3>
+                    <h3>Today&apos;s takeaway</h3>
                     <p className={styles.sub}>Idempotency key turns a risky operation into a safe operation.</p>
                   </div>
                   <span className={`${styles.chip} ${styles.chipOk}`}>Closing</span>

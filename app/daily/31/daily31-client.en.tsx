@@ -169,7 +169,7 @@ export default function Daily31Client() {
               <section className={styles.section} id="takeaway">
                 <div className={styles.shd}>
                   <div>
-                    <h3>Today's takeaway</h3>
+                    <h3>Today&apos;s takeaway</h3>
                     <p className={styles.sub}>
                       Not all excess should be blocked: sometimes regulating traffic gives a better result.
                     </p>

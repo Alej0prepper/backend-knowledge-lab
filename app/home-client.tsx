@@ -1,11 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./page.module.css";
-
-type Language = "en" | "es";
+import { useSiteLanguage } from "./use-site-language";
 
 type LessonCard = {
   dayNumber: number;
@@ -59,25 +57,7 @@ type HomeClientProps = {
 };
 
 export default function HomeClient({ lessons }: HomeClientProps) {
-  const [language, setLanguage] = useState<Language>("en");
-
-  useEffect(() => {
-    const savedLanguage = window.localStorage.getItem("site-language");
-    if (savedLanguage === "en" || savedLanguage === "es") {
-      setLanguage(savedLanguage);
-    }
-    const onLanguageChange = () => {
-      const nextSavedLanguage = window.localStorage.getItem("site-language");
-      if (nextSavedLanguage === "en" || nextSavedLanguage === "es") {
-        setLanguage(nextSavedLanguage);
-      }
-    };
-    window.addEventListener("site-language-change", onLanguageChange as EventListener);
-    return () => {
-      window.removeEventListener("site-language-change", onLanguageChange as EventListener);
-    };
-  }, []);
-
+  const language = useSiteLanguage();
   const copy = dictionary[language];
 
   return (

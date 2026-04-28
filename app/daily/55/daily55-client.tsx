@@ -7,54 +7,46 @@ import styles from "../daily-lesson.module.css";
 const tocItems = [
   { id: "idea", label: "1) Idea" },
   { id: "definition", label: "2) Definicion" },
-  { id: "example", label: "3) Ejemplo" },
-  { id: "cause", label: "4) Por que pasa" },
+  { id: "problem", label: "3) Problema" },
+  { id: "impact", label: "4) Impacto" },
   { id: "dotnet", label: "5) .NET" },
   { id: "testing", label: "6) Testing" },
   { id: "mini-project", label: "Practica" },
 ] as const;
 
-const endpointSnippet = `GET /orders/{id}`;
-
-const userASnippet = `/orders/100`;
-
-const userBSnippet = `/orders/101`;
-
-const badFlowSnippet = `buscar por id -> devolver`;
-
-const missingCheckSnippet = `este recurso pertenece al usuario?`;
-
-const vulnerableDotnetSnippet = `[Authorize]
-public async Task<Order> GetOrder(Guid id)
-{
-    return await _repository.GetByIdAsync(id);
+const badConfigSnippet = `{
+  "ConnectionString": "Server=...;User=admin;Password=123456",
+  "ApiKey": "abc123"
 }`;
 
-const correctDotnetSnippet = `[Authorize]
-public async Task<Order> GetOrder(Guid id)
-{
-    var order = await _repository.GetByIdAsync(id);
+const badLocationsSnippet = `appsettings.json
+repositorios publicos
+commits antiguos
+logs
+variables hardcodeadas`;
 
-    if (order.UserId != CurrentUser.Id)
-        throw new UnauthorizedAccessException();
+const envSnippet = `ConnectionString = ENV["DB_CONNECTION"]`;
 
-    return order;
-}`;
+const userSecretsSnippet = `dotnet user-secrets`;
 
-const commonEndpointsSnippet = `/orders/{id}
-/users/{id}
-/documents/{id}
-/invoices/{id}`;
+const badDotnetSnippet = `var apiKey = "abc123";`;
 
-const testerIdsSnippet = `/orders/101
-/orders/102
-/orders/999`;
+const goodDotnetSnippet = `var apiKey = configuration["ApiKey"];`;
 
-const subtleVariantsSnippet = `- filtras por ID pero no por usuario
-- usas queries sin ownership
-- devuelves listas sin restriccion`;
+const secureSourcesSnippet = `env variables
+vault
+config seguro`;
 
-export default function Daily54Client() {
+const testerSearchSnippet = `password
+apikey
+secret
+connection`;
+
+const classificationSnippet = `seguro
+inseguro
+critico`;
+
+export default function Daily55Client() {
   const [activeSection, setActiveSection] = useState<string>("idea");
 
   useEffect(() => {
@@ -81,7 +73,7 @@ export default function Daily54Client() {
     const onKeyDown = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
       if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) return;
-      if (event.key.toLowerCase() === "p") window.location.href = "/daily/53";
+      if (event.key.toLowerCase() === "p") window.location.href = "/daily/54";
     };
 
     window.addEventListener("keydown", onKeyDown);
@@ -118,11 +110,8 @@ export default function Daily54Client() {
           </nav>
 
           <div className={styles.actions}>
-            <Link className={styles.btn} href="/daily/53">
-              <span className={styles.kbd}>←</span> Dia 53
-            </Link>
-            <Link className={styles.btn} href="/daily/55">
-              Dia 55
+            <Link className={styles.btn} href="/daily/54">
+              <span className={styles.kbd}>←</span> Dia 54
             </Link>
             <Link className={`${styles.btn} ${styles.primary}`} href="#idea">
               Empezar
@@ -136,21 +125,22 @@ export default function Daily54Client() {
           <article className={styles.card}>
             <div className={styles.bd}>
               <div className={styles.dailyHero}>
-                <div className={styles.createdAt}>26/04/2026</div>
-                <div className={styles.badge}>Daily #54 • Backend Foundations</div>
-                <h2 className={styles.title}>IDOR: acceder a datos de otros sin permiso</h2>
+                <div className={styles.createdAt}>27/04/2026</div>
+                <div className={styles.badge}>Daily #55 • Backend Foundations</div>
+                <h2 className={styles.title}>Secretos en backend: donde se rompen los sistemas</h2>
 
                 <div className={styles.meta} aria-label="Metadata">
                   <span className={`${styles.chip} ${styles.chipOk}`}>5-10 min</span>
                   <span className={styles.chip}>Nivel: Intermedio</span>
                   <span className={`${styles.chip} ${styles.chipPro}`}>Tag: Seguridad</span>
-                  <span className={styles.chip}>Tag: Access Control</span>
-                  <span className={styles.chip}>Tag: API</span>
+                  <span className={styles.chip}>Tag: Secrets</span>
+                  <span className={styles.chip}>Tag: Config</span>
                   <span className={styles.chip}>Tag: .NET</span>
                 </div>
 
                 <p className={styles.lead}>
-                  IDOR ocurre cuando el backend confia en un ID y no valida si el usuario puede acceder a ese recurso.
+                  Muchos sistemas no caen por logica compleja. Caen porque alguien expuso una clave, token o
+                  credencial.
                 </p>
               </div>
 
@@ -166,14 +156,13 @@ export default function Daily54Client() {
                 <div className={styles.shd}>
                   <div>
                     <h3>1. La idea clave</h3>
-                    <p className={styles.sub}>Uno de los bugs mas comunes y peligrosos en APIs.</p>
+                    <p className={styles.sub}>Un secreto expuesto puede saltarse toda tu logica de negocio.</p>
                   </div>
                   <span className={styles.chip}>Concepto</span>
                 </div>
                 <div className={styles.sbd}>
                   <div className={styles.callout}>
-                    IDOR significa Insecure Direct Object Reference: cambiar un identificador permite acceder a un
-                    recurso que no deberia ser tuyo.
+                    Los sistemas no suelen caer por logica compleja. Caen porque alguien expuso un secreto.
                   </div>
                 </div>
               </section>
@@ -182,119 +171,141 @@ export default function Daily54Client() {
                 <div className={styles.shd}>
                   <div>
                     <h3>2. Definicion clara</h3>
-                    <p className={styles.sub}>El fallo esta en la autorizacion del recurso, no en el formato del ID.</p>
+                    <p className={styles.sub}>Un secreto es cualquier dato que da acceso o control.</p>
                   </div>
                   <span className={styles.chip}>Definicion</span>
                 </div>
                 <div className={styles.sbd}>
                   <div className={styles.quote}>
-                    IDOR es una vulnerabilidad donde un usuario puede acceder a recursos de otro simplemente cambiando
-                    un identificador.
+                    Un secreto es cualquier dato que permite acceso o control sobre el sistema.
                   </div>
-                  <p>El problema no es el ID. El problema es no validar quien lo usa.</p>
+
+                  <ul className={styles.bullets}>
+                    <li>API keys.</li>
+                    <li>Connection strings.</li>
+                    <li>Tokens.</li>
+                    <li>Credenciales.</li>
+                    <li>Private keys.</li>
+                  </ul>
                 </div>
               </section>
 
-              <section className={styles.section} id="example">
+              <section className={styles.section} id="problem">
                 <div className={styles.shd}>
                   <div>
-                    <h3>3. Ejemplo simple</h3>
-                    <p className={styles.sub}>Una URL con ID basta para probar el fallo.</p>
+                    <h3>3. El problema real</h3>
+                    <p className={styles.sub}>El backend funciona, pero la configuracion quedo expuesta.</p>
                   </div>
                   <span className={`${styles.chip} ${styles.chipPro}`}>Riesgo</span>
                 </div>
                 <div className={styles.sbd}>
-                  <h4>Endpoint</h4>
-                  <pre>{endpointSnippet}</pre>
+                  <p>Muchos proyectos terminan con secretos dentro de archivos versionados:</p>
+                  <pre>{badConfigSnippet}</pre>
 
-                  <h4>Usuario A</h4>
-                  <pre>{userASnippet}</pre>
-
-                  <h4>Usuario B prueba</h4>
-                  <pre>{userBSnippet}</pre>
-
-                  <div className={styles.quote}>Si puede ver el pedido, hay IDOR.</div>
+                  <div className={styles.quote}>Subir esto al repositorio es un problema critico.</div>
                 </div>
               </section>
 
-              <section className={styles.section} id="cause">
+              <section className={styles.section} id="impact">
                 <div className={styles.shd}>
                   <div>
-                    <h3>4. Por que pasa</h3>
-                    <p className={styles.sub}>El backend busca por ID, pero no comprueba propiedad ni permiso.</p>
+                    <h3>4. Por que es tan grave</h3>
+                    <p className={styles.sub}>Con un secreto valido, el atacante no necesita vulnerar tu codigo.</p>
                   </div>
-                  <span className={styles.chip}>Causa</span>
+                  <span className={styles.chip}>Impacto</span>
                 </div>
                 <div className={styles.sbd}>
-                  <p>El backend vulnerable suele hacer esto:</p>
-                  <pre>{badFlowSnippet}</pre>
-
-                  <p>Pero no valida esto:</p>
-                  <pre>{missingCheckSnippet}</pre>
+                  <p>Si alguien obtiene un secreto, puede:</p>
+                  <ul className={styles.bullets}>
+                    <li>Acceder a la base de datos.</li>
+                    <li>Usar APIs externas como si fueras tu.</li>
+                    <li>Robar informacion.</li>
+                    <li>Ejecutar acciones en tu nombre.</li>
+                  </ul>
 
                   <div className={styles.callout}>
-                    Backend junior usa IDs. Backend senior valida ownership antes de devolver datos.
+                    Muchos sistemas no son hackeados. Son simplemente expuestos.
                   </div>
+                </div>
+              </section>
+
+              <section className={styles.section} id="locations">
+                <div className={styles.shd}>
+                  <div>
+                    <h3>5. Donde suelen estar mal ubicados</h3>
+                    <p className={styles.sub}>El secreto casi siempre aparece en sitios faciles de revisar.</p>
+                  </div>
+                  <span className={styles.chip}>Superficie</span>
+                </div>
+                <div className={styles.sbd}>
+                  <pre>{badLocationsSnippet}</pre>
                 </div>
               </section>
 
               <section className={styles.section} id="dotnet">
                 <div className={styles.shd}>
                   <div>
-                    <h3>5. Como se ve en .NET</h3>
-                    <p className={styles.sub}>[Authorize] valida autenticacion; no valida ownership por si solo.</p>
+                    <h3>6. Como deberia hacerse en .NET</h3>
+                    <p className={styles.sub}>El codigo debe referenciar secretos, no contenerlos.</p>
                   </div>
                   <span className={styles.chip}>Implementacion</span>
                 </div>
                 <div className={styles.sbd}>
-                  <h4>Vulnerable</h4>
-                  <pre>{vulnerableDotnetSnippet}</pre>
-                  <p>Solo valida que hay login. No valida que el pedido pertenezca al usuario actual.</p>
+                  <h4>Variables de entorno</h4>
+                  <pre>{envSnippet}</pre>
 
-                  <h4>Correcto</h4>
-                  <pre>{correctDotnetSnippet}</pre>
-                  <p>Ahora el endpoint valida acceso sobre el recurso concreto antes de devolverlo.</p>
+                  <h4>User Secrets en desarrollo</h4>
+                  <pre>{userSecretsSnippet}</pre>
+
+                  <h4>Azure Key Vault / Secret Manager en produccion</h4>
+                  <p>Los secretos viven fuera del codigo y se inyectan por configuracion segura.</p>
+
+                  <h4>Mal</h4>
+                  <pre>{badDotnetSnippet}</pre>
+
+                  <h4>Bien</h4>
+                  <pre>{goodDotnetSnippet}</pre>
+
+                  <p>Ese valor debe venir de:</p>
+                  <pre>{secureSourcesSnippet}</pre>
                 </div>
               </section>
 
-              <section className={styles.section} id="where">
+              <section className={styles.section} id="mindset">
                 <div className={styles.shd}>
                   <div>
-                    <h3>6. Donde aparece IDOR</h3>
-                    <p className={styles.sub}>Cualquier endpoint con IDs merece una prueba de ownership.</p>
+                    <h3>7. Como piensa un backend developer</h3>
+                    <p className={styles.sub}>No basta con que funcione en local.</p>
                   </div>
-                  <span className={styles.chip}>Superficie</span>
+                  <span className={styles.chip}>Mentalidad</span>
                 </div>
                 <div className={styles.sbd}>
-                  <pre>{commonEndpointsSnippet}</pre>
-                  <p>La pregunta correcta no es &quot;tengo el ID?&quot;. Es &quot;este usuario tiene derecho a este objeto?&quot;.</p>
+                  <div className={styles.quote}>
+                    No pregunta &quot;funciona?&quot;. Pregunta &quot;que pasa si alguien ve este repositorio?&quot;.
+                  </div>
+                  <div className={styles.callout}>
+                    El codigo no debe contener secretos. Solo debe referenciarlos.
+                  </div>
                 </div>
               </section>
 
               <section className={styles.section} id="testing">
                 <div className={styles.shd}>
                   <div>
-                    <h3>7. Como lo detectas como tester</h3>
-                    <p className={styles.sub}>Cambiar IDs es una tecnica basica, rapida y muy efectiva.</p>
+                    <h3>8. Como lo detectas como tester</h3>
+                    <p className={styles.sub}>La busqueda textual descubre muchos fallos de practica.</p>
                   </div>
                   <span className={styles.chip}>Testing</span>
                 </div>
                 <div className={styles.sbd}>
-                  <h4>Paso 1</h4>
-                  <p>Accede a un recurso valido:</p>
-                  <pre>{userASnippet}</pre>
+                  <h4>Revisar repo</h4>
+                  <pre>{testerSearchSnippet}</pre>
 
-                  <h4>Paso 2</h4>
-                  <p>Cambia el ID:</p>
-                  <pre>{testerIdsSnippet}</pre>
+                  <h4>Revisar appsettings</h4>
+                  <p>Hay credenciales, tokens o connection strings reales?</p>
 
-                  <h4>Paso 3</h4>
-                  <p>Observa si devuelve datos que no son tuyos.</p>
-
-                  <ul className={styles.bullets}>
-                    <li>Si devuelve datos de otro usuario, hay IDOR.</li>
-                    <li>Si bloquea el acceso, el control de ownership funciona.</li>
-                  </ul>
+                  <h4>Revisar logs</h4>
+                  <p>Se imprimen secretos completos en errores, trazas o debug?</p>
                 </div>
               </section>
 
@@ -302,29 +313,13 @@ export default function Daily54Client() {
                 <div className={styles.shd}>
                   <div>
                     <h3>Error tipico</h3>
-                    <p className={styles.sub}>Creer que [Authorize] protege contra IDOR.</p>
+                    <p className={styles.sub}>Pensar que un secreto de desarrollo no importa.</p>
                   </div>
                   <span className={`${styles.chip} ${styles.chipPro}`}>Alerta</span>
                 </div>
                 <div className={styles.sbd}>
-                  <div className={styles.quote}>[Authorize] no protege contra IDOR.</div>
-                  <p>Protege el endpoint de usuarios anonimos, pero no decide si el usuario autenticado puede ver ese ID.</p>
-                </div>
-              </section>
-
-              <section className={styles.section} id="variants">
-                <div className={styles.shd}>
-                  <div>
-                    <h3>Variantes mas sutiles</h3>
-                    <p className={styles.sub}>No siempre aparece como /orders/101.</p>
-                  </div>
-                  <span className={styles.chip}>Patrones</span>
-                </div>
-                <div className={styles.sbd}>
-                  <pre>{subtleVariantsSnippet}</pre>
-                  <div className={styles.callout}>
-                    Si puedes cambiar un numero en la URL y ver datos de otro, tienes una vulnerabilidad critica.
-                  </div>
+                  <div className={styles.quote}>Es solo para desarrollo.</div>
+                  <p>Luego se sube a git, se comparte o se despliega. El secreto deja de ser privado.</p>
                 </div>
               </section>
 
@@ -332,15 +327,15 @@ export default function Daily54Client() {
                 <div className={styles.shd}>
                   <div>
                     <h3>Idea que te llevas hoy</h3>
-                    <p className={styles.sub}>No confies en el ID: autoriza el acceso al recurso.</p>
+                    <p className={styles.sub}>Un secreto versionado es una puerta abierta.</p>
                   </div>
                   <span className={`${styles.chip} ${styles.chipOk}`}>Cierre</span>
                 </div>
                 <div className={styles.sbd}>
+                  <div className={styles.quote}>Un secreto expuesto es una puerta abierta.</div>
                   <div className={styles.quote}>
-                    IDOR ocurre cuando el backend confia en el ID sin validar el usuario.
+                    Backend junior guarda secretos en codigo. Backend senior los mantiene fuera del sistema.
                   </div>
-                  <div className={styles.quote}>Backend junior usa IDs. Backend senior valida ownership.</div>
                 </div>
               </section>
 
@@ -348,48 +343,44 @@ export default function Daily54Client() {
                 <div className={styles.shd}>
                   <div>
                     <h3>Mini-proyecto (5-10 min)</h3>
-                    <p className={styles.sub}>Detectar IDOR en una API cambiando identificadores.</p>
+                    <p className={styles.sub}>Detectar exposicion de secretos en un proyecto.</p>
                   </div>
                   <span className={styles.chip}>Practica</span>
                 </div>
                 <div className={styles.sbd}>
-                  <p>Objetivo: comprobar si el backend valida ownership o solo busca por ID.</p>
+                  <p>Objetivo: encontrar secretos expuestos y clasificarlos por riesgo.</p>
 
-                  <h4>Endpoint</h4>
-                  <pre>GET /resource/{`{id}`}</pre>
+                  <h4>Paso 1 - Busca</h4>
+                  <pre>{testerSearchSnippet}</pre>
 
-                  <h4>Paso 1 - Usuario A</h4>
-                  <pre>/resource/1</pre>
+                  <h4>Paso 2 - Revisa</h4>
+                  <p>Estan en codigo, appsettings, logs o commits antiguos?</p>
 
-                  <h4>Paso 2 - Modifica el ID</h4>
-                  <pre>{`/resource/2
-/resource/3`}</pre>
+                  <h4>Paso 3 - Clasifica</h4>
+                  <pre>{classificationSnippet}</pre>
 
-                  <h4>Paso 3 - Pregunta clave</h4>
-                  <p>Ves datos que no son tuyos?</p>
+                  <h4>Paso 4 - Pregunta clave</h4>
+                  <p>Alguien externo podria usar esto?</p>
 
                   <p>Que debes notar:</p>
                   <ul className={styles.bullets}>
-                    <li>Cambiar IDs es una tecnica basica.</li>
-                    <li>Muchas APIs fallan aqui.</li>
-                    <li>Es facil de probar y muy grave.</li>
+                    <li>Los secretos suelen estar visibles.</li>
+                    <li>El problema no es tecnico, es de practica.</li>
+                    <li>Es facil de detectar.</li>
                   </ul>
 
                   <p>Nivel 2:</p>
                   <ul className={styles.bullets}>
-                    <li>Tu sistema filtra por usuario en DB?</li>
-                    <li>O solo busca por ID?</li>
+                    <li>Tu proyecto tiene secretos en appsettings?</li>
+                    <li>Estan versionados?</li>
                   </ul>
 
                   <div className={styles.footerNav}>
                     <Link className={styles.btn} href="/daily">
                       Ver archivo
                     </Link>
-                    <Link className={styles.btn} href="/daily/53">
-                      Dia 53
-                    </Link>
-                    <Link className={styles.btn} href="/daily/55">
-                      Dia 55
+                    <Link className={styles.btn} href="/daily/54">
+                      Dia 54
                     </Link>
                   </div>
                 </div>
@@ -402,18 +393,18 @@ export default function Daily54Client() {
               <div className={styles.hd}>
                 <div>
                   <h2>Resumen rapido</h2>
-                  <p>Dia 54 en una vista.</p>
+                  <p>Dia 55 en una vista.</p>
                 </div>
               </div>
               <div className={styles.bd}>
                 <div className={styles.li}>
-                  <strong>Regla:</strong> tener un ID no significa tener permiso sobre ese recurso.
+                  <strong>Regla:</strong> el codigo referencia secretos; no los guarda.
                 </div>
                 <div className={styles.li}>
-                  <strong>Riesgo:</strong> cambiar IDs puede exponer pedidos, usuarios, documentos o facturas de otros.
+                  <strong>Riesgo:</strong> una clave expuesta permite acceso sin romper tu logica.
                 </div>
                 <div className={styles.li}>
-                  <strong>Accion:</strong> validar ownership en DB o en la capa de autorizacion antes de devolver datos.
+                  <strong>Accion:</strong> usar variables de entorno, User Secrets o vaults segun el entorno.
                 </div>
               </div>
             </div>

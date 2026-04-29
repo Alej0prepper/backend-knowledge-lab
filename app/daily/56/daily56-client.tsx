@@ -14,39 +14,35 @@ const tocItems = [
   { id: "mini-project", label: "Practica" },
 ] as const;
 
-const badConfigSnippet = `{
-  "ConnectionString": "Server=...;User=admin;Password=123456",
-  "ApiKey": "abc123"
+const internalErrorSnippet = `NullReferenceException at OrderService.cs line 45`;
+
+const badCatchSnippet = `catch (Exception ex)
+{
+    return BadRequest(ex.Message);
 }`;
 
-const badLocationsSnippet = `appsettings.json
-repositorios publicos
-commits antiguos
-logs
-variables hardcodeadas`;
+const badDotnetSnippet = `return BadRequest(ex.Message);`;
 
-const envSnippet = `ConnectionString = ENV["DB_CONNECTION"]`;
+const goodDotnetSnippet = `return StatusCode(500, "Ha ocurrido un error");`;
 
-const userSecretsSnippet = `dotnet user-secrets`;
+const loggingSnippet = `_logger.LogError(ex, "Error en procesamiento de pedido");`;
 
-const badDotnetSnippet = `var apiKey = "abc123";`;
+const sqlErrorSnippet = `SQL Exception: table Users not found`;
 
-const goodDotnetSnippet = `var apiKey = configuration["ApiKey"];`;
+const exceptionHandlerSnippet = `app.UseExceptionHandler("/error");`;
 
-const secureSourcesSnippet = `env variables
-vault
-config seguro`;
+const safePatternSnippet = `mensaje generico + logging interno`;
 
-const testerSearchSnippet = `password
-apikey
-secret
-connection`;
+const endpointSnippet = `POST /orders`;
 
-const classificationSnippet = `seguro
-inseguro
-critico`;
+const brokenRequestSnippet = `null
+datos invalidos
+estructura incorrecta`;
 
-export default function Daily55Client() {
+const classificationSnippet = `seguro -> mensaje generico
+inseguro -> detalles tecnicos`;
+
+export default function Daily56Client() {
   const [activeSection, setActiveSection] = useState<string>("idea");
 
   useEffect(() => {
@@ -73,7 +69,7 @@ export default function Daily55Client() {
     const onKeyDown = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
       if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) return;
-      if (event.key.toLowerCase() === "p") window.location.href = "/daily/54";
+      if (event.key.toLowerCase() === "p") window.location.href = "/daily/55";
     };
 
     window.addEventListener("keydown", onKeyDown);
@@ -110,11 +106,8 @@ export default function Daily55Client() {
           </nav>
 
           <div className={styles.actions}>
-            <Link className={styles.btn} href="/daily/54">
-              <span className={styles.kbd}>←</span> Dia 54
-            </Link>
-            <Link className={styles.btn} href="/daily/56">
-              Dia 56
+            <Link className={styles.btn} href="/daily/55">
+              <span className={styles.kbd}>←</span> Dia 55
             </Link>
             <Link className={`${styles.btn} ${styles.primary}`} href="#idea">
               Empezar
@@ -128,22 +121,21 @@ export default function Daily55Client() {
           <article className={styles.card}>
             <div className={styles.bd}>
               <div className={styles.dailyHero}>
-                <div className={styles.createdAt}>27/04/2026</div>
-                <div className={styles.badge}>Daily #55 • Backend Foundations</div>
-                <h2 className={styles.title}>Secretos en backend: donde se rompen los sistemas</h2>
+                <div className={styles.createdAt}>28/04/2026</div>
+                <div className={styles.badge}>Daily #56 • Backend Foundations</div>
+                <h2 className={styles.title}>Manejo de errores: como filtras informacion sin darte cuenta</h2>
 
                 <div className={styles.meta} aria-label="Metadata">
                   <span className={`${styles.chip} ${styles.chipOk}`}>5-10 min</span>
                   <span className={styles.chip}>Nivel: Intermedio</span>
                   <span className={`${styles.chip} ${styles.chipPro}`}>Tag: Seguridad</span>
-                  <span className={styles.chip}>Tag: Secrets</span>
-                  <span className={styles.chip}>Tag: Config</span>
+                  <span className={styles.chip}>Tag: Error Handling</span>
+                  <span className={styles.chip}>Tag: Logging</span>
                   <span className={styles.chip}>Tag: .NET</span>
                 </div>
 
                 <p className={styles.lead}>
-                  Muchos sistemas no caen por logica compleja. Caen porque alguien expuso una clave, token o
-                  credencial.
+                  Los errores no solo rompen funcionalidades. Tambien pueden revelar informacion sensible del sistema.
                 </p>
               </div>
 
@@ -159,13 +151,13 @@ export default function Daily55Client() {
                 <div className={styles.shd}>
                   <div>
                     <h3>1. La idea clave</h3>
-                    <p className={styles.sub}>Un secreto expuesto puede saltarse toda tu logica de negocio.</p>
+                    <p className={styles.sub}>Un error mal manejado puede explicar como funciona tu sistema.</p>
                   </div>
                   <span className={styles.chip}>Concepto</span>
                 </div>
                 <div className={styles.sbd}>
                   <div className={styles.callout}>
-                    Los sistemas no suelen caer por logica compleja. Caen porque alguien expuso un secreto.
+                    Los errores no solo rompen funcionalidades. Tambien pueden revelar informacion sensible.
                   </div>
                 </div>
               </section>
@@ -174,21 +166,33 @@ export default function Daily55Client() {
                 <div className={styles.shd}>
                   <div>
                     <h3>2. Definicion clara</h3>
-                    <p className={styles.sub}>Un secreto es cualquier dato que da acceso o control.</p>
+                    <p className={styles.sub}>La filtracion ocurre cuando el backend devuelve detalles internos.</p>
                   </div>
                   <span className={styles.chip}>Definicion</span>
                 </div>
                 <div className={styles.sbd}>
                   <div className={styles.quote}>
-                    Un secreto es cualquier dato que permite acceso o control sobre el sistema.
+                    Filtracion de informacion: ocurre cuando el backend devuelve datos internos que ayudan a entender
+                    como funciona el sistema.
                   </div>
+                </div>
+              </section>
 
+              <section className={styles.section} id="example">
+                <div className={styles.shd}>
+                  <div>
+                    <h3>3. Ejemplo simple</h3>
+                    <p className={styles.sub}>Un mensaje tecnico puede revelar estructura, nombres y ubicaciones.</p>
+                  </div>
+                  <span className={`${styles.chip} ${styles.chipPro}`}>Riesgo</span>
+                </div>
+                <div className={styles.sbd}>
+                  <pre>{internalErrorSnippet}</pre>
+                  <p>Esto revela:</p>
                   <ul className={styles.bullets}>
-                    <li>API keys.</li>
-                    <li>Connection strings.</li>
-                    <li>Tokens.</li>
-                    <li>Credenciales.</li>
-                    <li>Private keys.</li>
+                    <li>Estructura interna.</li>
+                    <li>Nombres de clases.</li>
+                    <li>Ubicacion del codigo.</li>
                   </ul>
                 </div>
               </section>
@@ -196,52 +200,37 @@ export default function Daily55Client() {
               <section className={styles.section} id="problem">
                 <div className={styles.shd}>
                   <div>
-                    <h3>3. El problema real</h3>
-                    <p className={styles.sub}>El backend funciona, pero la configuracion quedo expuesta.</p>
+                    <h3>4. El problema real</h3>
+                    <p className={styles.sub}>Devolver `ex.Message` al cliente suele filtrar demasiado.</p>
                   </div>
-                  <span className={`${styles.chip} ${styles.chipPro}`}>Riesgo</span>
+                  <span className={`${styles.chip} ${styles.chipPro}`}>Antipatron</span>
                 </div>
                 <div className={styles.sbd}>
-                  <p>Muchos proyectos terminan con secretos dentro de archivos versionados:</p>
-                  <pre>{badConfigSnippet}</pre>
-
-                  <div className={styles.quote}>Subir esto al repositorio es un problema critico.</div>
+                  <pre>{badCatchSnippet}</pre>
+                  <div className={styles.quote}>MAL: el cliente recibe detalles internos de una excepcion.</div>
                 </div>
               </section>
 
               <section className={styles.section} id="impact">
                 <div className={styles.shd}>
                   <div>
-                    <h3>4. Por que es tan grave</h3>
-                    <p className={styles.sub}>Con un secreto valido, el atacante no necesita vulnerar tu codigo.</p>
+                    <h3>5. Por que es peligroso</h3>
+                    <p className={styles.sub}>Cada detalle tecnico reduce el trabajo del atacante.</p>
                   </div>
                   <span className={styles.chip}>Impacto</span>
                 </div>
                 <div className={styles.sbd}>
-                  <p>Si alguien obtiene un secreto, puede:</p>
+                  <p>El atacante puede aprender:</p>
                   <ul className={styles.bullets}>
-                    <li>Acceder a la base de datos.</li>
-                    <li>Usar APIs externas como si fueras tu.</li>
-                    <li>Robar informacion.</li>
-                    <li>Ejecutar acciones en tu nombre.</li>
+                    <li>Nombres de tablas.</li>
+                    <li>Rutas internas.</li>
+                    <li>Logica del sistema.</li>
+                    <li>Tecnologia usada.</li>
                   </ul>
 
-                  <div className={styles.callout}>
-                    Muchos sistemas no son hackeados. Son simplemente expuestos.
-                  </div>
-                </div>
-              </section>
-
-              <section className={styles.section} id="locations">
-                <div className={styles.shd}>
-                  <div>
-                    <h3>5. Donde suelen estar mal ubicados</h3>
-                    <p className={styles.sub}>El secreto casi siempre aparece en sitios faciles de revisar.</p>
-                  </div>
-                  <span className={styles.chip}>Superficie</span>
-                </div>
-                <div className={styles.sbd}>
-                  <pre>{badLocationsSnippet}</pre>
+                  <h4>Ejemplo real peligroso</h4>
+                  <pre>{sqlErrorSnippet}</pre>
+                  <p>Ahora sabe que existe una tabla Users, que hay acceso a DB y que el fallo viene de SQL.</p>
                 </div>
               </section>
 
@@ -249,45 +238,52 @@ export default function Daily55Client() {
                 <div className={styles.shd}>
                   <div>
                     <h3>6. Como deberia hacerse en .NET</h3>
-                    <p className={styles.sub}>El codigo debe referenciar secretos, no contenerlos.</p>
+                    <p className={styles.sub}>Separa lo que ve el usuario de lo que registras internamente.</p>
                   </div>
                   <span className={styles.chip}>Implementacion</span>
                 </div>
                 <div className={styles.sbd}>
-                  <h4>Variables de entorno</h4>
-                  <pre>{envSnippet}</pre>
-
-                  <h4>User Secrets en desarrollo</h4>
-                  <pre>{userSecretsSnippet}</pre>
-
-                  <h4>Azure Key Vault / Secret Manager en produccion</h4>
-                  <p>Los secretos viven fuera del codigo y se inyectan por configuracion segura.</p>
-
                   <h4>Mal</h4>
                   <pre>{badDotnetSnippet}</pre>
 
                   <h4>Bien</h4>
                   <pre>{goodDotnetSnippet}</pre>
 
-                  <p>Ese valor debe venir de:</p>
-                  <pre>{secureSourcesSnippet}</pre>
+                  <h4>Log interno</h4>
+                  <pre>{loggingSnippet}</pre>
+
+                  <div className={styles.callout}>El cliente no necesita saber que fallo internamente.</div>
+                </div>
+              </section>
+
+              <section className={styles.section} id="pattern">
+                <div className={styles.shd}>
+                  <div>
+                    <h3>7. Buen patron muy usado</h3>
+                    <p className={styles.sub}>Un middleware global centraliza respuestas seguras y logging.</p>
+                  </div>
+                  <span className={styles.chip}>Patron</span>
+                </div>
+                <div className={styles.sbd}>
+                  <h4>En .NET</h4>
+                  <pre>{exceptionHandlerSnippet}</pre>
+                  <p>Y devuelves:</p>
+                  <pre>{safePatternSnippet}</pre>
                 </div>
               </section>
 
               <section className={styles.section} id="mindset">
                 <div className={styles.shd}>
                   <div>
-                    <h3>7. Como piensa un backend developer</h3>
-                    <p className={styles.sub}>No basta con que funcione en local.</p>
+                    <h3>8. Como piensa un backend developer</h3>
+                    <p className={styles.sub}>El objetivo no es esconder el error; es controlar lo que revela.</p>
                   </div>
                   <span className={styles.chip}>Mentalidad</span>
                 </div>
                 <div className={styles.sbd}>
                   <div className={styles.quote}>
-                    No pregunta &quot;funciona?&quot;. Pregunta &quot;que pasa si alguien ve este repositorio?&quot;.
-                  </div>
-                  <div className={styles.callout}>
-                    El codigo no debe contener secretos. Solo debe referenciarlos.
+                    No piensa &quot;quiero ayudar al frontend con errores detallados&quot;. Piensa &quot;que informacion
+                    estoy exponiendo?&quot;.
                   </div>
                 </div>
               </section>
@@ -295,34 +291,60 @@ export default function Daily55Client() {
               <section className={styles.section} id="testing">
                 <div className={styles.shd}>
                   <div>
-                    <h3>8. Como lo detectas como tester</h3>
-                    <p className={styles.sub}>La busqueda textual descubre muchos fallos de practica.</p>
+                    <h3>9. Como lo detectas como tester</h3>
+                    <p className={styles.sub}>Fuerza errores y observa si aparecen detalles internos.</p>
                   </div>
                   <span className={styles.chip}>Testing</span>
                 </div>
                 <div className={styles.sbd}>
-                  <h4>Revisar repo</h4>
-                  <pre>{testerSearchSnippet}</pre>
+                  <h4>Forzar errores</h4>
+                  <ul className={styles.bullets}>
+                    <li>Enviar null.</li>
+                    <li>Enviar datos invalidos.</li>
+                    <li>Usar endpoints incorrectos.</li>
+                  </ul>
 
-                  <h4>Revisar appsettings</h4>
-                  <p>Hay credenciales, tokens o connection strings reales?</p>
+                  <h4>Observar respuesta</h4>
+                  <p>Busca stack traces, nombres de clases, queries SQL o rutas internas.</p>
 
-                  <h4>Revisar logs</h4>
-                  <p>Se imprimen secretos completos en errores, trazas o debug?</p>
+                  <h4>Resultado</h4>
+                  <ul className={styles.bullets}>
+                    <li>Si ves detalles internos: filtracion.</li>
+                    <li>Si ves mensaje generico: correcto.</li>
+                  </ul>
                 </div>
               </section>
 
               <section className={styles.section} id="mistake">
                 <div className={styles.shd}>
                   <div>
-                    <h3>Error tipico</h3>
-                    <p className={styles.sub}>Pensar que un secreto de desarrollo no importa.</p>
+                    <h3>10. Error tipico</h3>
+                    <p className={styles.sub}>Pensar que esto solo pasa en desarrollo.</p>
                   </div>
                   <span className={`${styles.chip} ${styles.chipPro}`}>Alerta</span>
                 </div>
                 <div className={styles.sbd}>
-                  <div className={styles.quote}>Es solo para desarrollo.</div>
-                  <p>Luego se sube a git, se comparte o se despliega. El secreto deja de ser privado.</p>
+                  <p>El problema aparece cuando:</p>
+                  <ul className={styles.bullets}>
+                    <li>Se despliega igual.</li>
+                    <li>Se filtra en logs.</li>
+                    <li>Queda expuesto en staging.</li>
+                  </ul>
+                </div>
+              </section>
+
+              <section className={styles.section} id="insight">
+                <div className={styles.shd}>
+                  <div>
+                    <h3>Insight importante</h3>
+                    <p className={styles.sub}>Un error seguro protege; un error tecnico enseña.</p>
+                  </div>
+                  <span className={`${styles.chip} ${styles.chipPro}`}>Insight</span>
+                </div>
+                <div className={styles.sbd}>
+                  <div className={styles.quote}>
+                    Un error bien manejado protege. Un error mal manejado enseña como atacarte.
+                  </div>
                 </div>
               </section>
 
@@ -330,14 +352,14 @@ export default function Daily55Client() {
                 <div className={styles.shd}>
                   <div>
                     <h3>Idea que te llevas hoy</h3>
-                    <p className={styles.sub}>Un secreto versionado es una puerta abierta.</p>
+                    <p className={styles.sub}>Los errores tambien son una superficie de ataque.</p>
                   </div>
                   <span className={`${styles.chip} ${styles.chipOk}`}>Cierre</span>
                 </div>
                 <div className={styles.sbd}>
-                  <div className={styles.quote}>Un secreto expuesto es una puerta abierta.</div>
+                  <div className={styles.quote}>Los errores tambien son una superficie de ataque.</div>
                   <div className={styles.quote}>
-                    Backend junior guarda secretos en codigo. Backend senior los mantiene fuera del sistema.
+                    Backend junior muestra errores. Backend senior controla lo que revela.
                   </div>
                 </div>
               </section>
@@ -346,47 +368,47 @@ export default function Daily55Client() {
                 <div className={styles.shd}>
                   <div>
                     <h3>Mini-proyecto (5-10 min)</h3>
-                    <p className={styles.sub}>Detectar exposicion de secretos en un proyecto.</p>
+                    <p className={styles.sub}>Detectar filtracion de informacion en respuestas de error.</p>
                   </div>
                   <span className={styles.chip}>Practica</span>
                 </div>
                 <div className={styles.sbd}>
-                  <p>Objetivo: encontrar secretos expuestos y clasificarlos por riesgo.</p>
+                  <p>Objetivo: romper un request y revisar si la API revela informacion interna.</p>
 
-                  <h4>Paso 1 - Busca</h4>
-                  <pre>{testerSearchSnippet}</pre>
+                  <h4>Endpoint</h4>
+                  <pre>{endpointSnippet}</pre>
 
-                  <h4>Paso 2 - Revisa</h4>
-                  <p>Estan en codigo, appsettings, logs o commits antiguos?</p>
+                  <h4>Paso 1 - Rompe el request</h4>
+                  <pre>{brokenRequestSnippet}</pre>
+
+                  <h4>Paso 2 - Observa respuesta</h4>
+                  <p>Ves detalles internos?</p>
 
                   <h4>Paso 3 - Clasifica</h4>
                   <pre>{classificationSnippet}</pre>
 
                   <h4>Paso 4 - Pregunta clave</h4>
-                  <p>Alguien externo podria usar esto?</p>
+                  <p>Un atacante aprende algo util aqui?</p>
 
                   <p>Que debes notar:</p>
                   <ul className={styles.bullets}>
-                    <li>Los secretos suelen estar visibles.</li>
-                    <li>El problema no es tecnico, es de practica.</li>
-                    <li>Es facil de detectar.</li>
+                    <li>Los errores dicen mucho.</li>
+                    <li>Ayudan a entender el sistema.</li>
+                    <li>Deben controlarse cuidadosamente.</li>
                   </ul>
 
                   <p>Nivel 2:</p>
                   <ul className={styles.bullets}>
-                    <li>Tu proyecto tiene secretos en appsettings?</li>
-                    <li>Estan versionados?</li>
+                    <li>Tu API devuelve `exception.Message`?</li>
+                    <li>Ves stack traces en responses?</li>
                   </ul>
 
                   <div className={styles.footerNav}>
                     <Link className={styles.btn} href="/daily">
                       Ver archivo
                     </Link>
-                    <Link className={styles.btn} href="/daily/54">
-                      Dia 54
-                    </Link>
-                    <Link className={styles.btn} href="/daily/56">
-                      Dia 56
+                    <Link className={styles.btn} href="/daily/55">
+                      Dia 55
                     </Link>
                   </div>
                 </div>
@@ -399,18 +421,18 @@ export default function Daily55Client() {
               <div className={styles.hd}>
                 <div>
                   <h2>Resumen rapido</h2>
-                  <p>Dia 55 en una vista.</p>
+                  <p>Dia 56 en una vista.</p>
                 </div>
               </div>
               <div className={styles.bd}>
                 <div className={styles.li}>
-                  <strong>Regla:</strong> el codigo referencia secretos; no los guarda.
+                  <strong>Regla:</strong> el cliente recibe mensajes genericos; el detalle vive en logs internos.
                 </div>
                 <div className={styles.li}>
-                  <strong>Riesgo:</strong> una clave expuesta permite acceso sin romper tu logica.
+                  <strong>Riesgo:</strong> stack traces, rutas, clases o SQL revelan como atacar el sistema.
                 </div>
                 <div className={styles.li}>
-                  <strong>Accion:</strong> usar variables de entorno, User Secrets o vaults segun el entorno.
+                  <strong>Accion:</strong> usar middleware global de errores y logging seguro.
                 </div>
               </div>
             </div>
